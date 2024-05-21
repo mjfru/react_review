@@ -52,9 +52,7 @@ function Menu() {
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-
-
-
+      
       {numPizzas > 0 ? (
         //* The fragment allows us to keep the <p> and <ul> seperately, leaving no trace in the HTML tree, and serves as a parent element.
         <>
