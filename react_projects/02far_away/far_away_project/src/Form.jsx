@@ -1,9 +1,15 @@
 import { useState } from "react";
 
-function Form() {
+// The prop it receives here is handleAddItems from the App.jsx, which is where the appropriate piece of state is.
+function Form({ onAddItems }) {
 
   const [description, setDescription] = useState("");
   const [quantity, setquantity] = useState(1);
+  //! We need to lift the state below up to the nearest parent component.
+  //! PackingList needs to use this but it's only a sibling component of this Form.
+  // const [items, setItems] = useState([]);
+
+
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -12,6 +18,8 @@ function Form() {
 
     const newItem = {description, quantity, packed: false, id: Date.now()}
     console.log(newItem);
+
+    onAddItems(newItem);
 
     setDescription("");
     setquantity(1);
