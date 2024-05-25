@@ -5,11 +5,10 @@ function Form({ onAddItems }) {
 
   const [description, setDescription] = useState("");
   const [quantity, setquantity] = useState(1);
+  
   //! We need to lift the state below up to the nearest parent component.
   //! PackingList needs to use this but it's only a sibling component of this Form.
   // const [items, setItems] = useState([]);
-
-
 
   function handleSubmit(e) {
     e.preventDefault();

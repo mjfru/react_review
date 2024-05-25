@@ -8,6 +8,8 @@ function App() {
 
   //! This was lifted up from the Form so it could be passed down to the PackingList.
   const [items, setItems] = useState([]);
+
+
   //! All the logic about updating the above state should also live in the same component...so here it is.
   function handleAddItems(item) {
     setItems((items) => [...items, item])
@@ -26,12 +28,17 @@ function App() {
     );
   }
 
+  function handleClearItems() {
+    const confirmed = window.confirm('Are you sure you want to clear this list?');
+    if(confirmed) setItems([]);
+  }
+
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems}/>
-      <PackingList items={items} onDeleteItem={handleDeleteItem} onToggleItem={handleToggleItem}/>
-      <Stats />
+      <PackingList items={items} onDeleteItem={handleDeleteItem} onToggleItem={handleToggleItem} onClearItems={handleClearItems}/>
+      <Stats items={items}/>
     </div>
   )
 }
