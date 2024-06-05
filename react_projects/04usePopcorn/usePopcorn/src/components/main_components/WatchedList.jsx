@@ -1,3 +1,4 @@
+//! Presentational / Stateless Component
 import WatchedMovie from "./WatchedMovie";
 
 function WatchedList({ watched }) {

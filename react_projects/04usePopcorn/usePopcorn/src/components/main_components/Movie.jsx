@@ -1,3 +1,4 @@
+//! Presentational / Stateless Component
 function Movie({ movie }) {
   return (
     <li>

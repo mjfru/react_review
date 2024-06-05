@@ -1,3 +1,4 @@
+//! Stateful Component
 import { useState } from "react";
 import Movie from "./Movie";
 
@@ -25,8 +26,8 @@ const tempMovieData = [
   },
 ];
 
-function MovieList() {
-  const [movies, setMovies] = useState(tempMovieData);
+function MovieList({ movies }) {
+
 
   return (
     <ul className="list">

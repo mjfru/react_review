@@ -1,3 +1,4 @@
+//! Presentational / Stateless Component
 function Summary({ watched, average }) {
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));

@@ -1,3 +1,4 @@
+//! Stateless / Presentational Component
 function Logo() {
   return (
     <div className="logo">

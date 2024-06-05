@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Navbar from "./components/navbar_components/Navbar";
-import ListBox from "./components/main_components/ListBox";
-import WatchedBox from "./components/main_components/WatchedBox";
+import Search from "./components/navbar_components/Search";
+import NumResults from "./components/navbar_components/NumResults";
+import Main from "./components/main_components/Main";
+import Box from "./components/main_components/Box";
+import Summary from "./components/main_components/Summary";
+import MovieList from "./components/main_components/MovieList";
+import WatchedList from "./components/main_components/WatchedList"
 
 const tempMovieData = [
   {
@@ -50,20 +55,39 @@ const tempWatchedData = [
   },
 ];
 
-
-
 function App() {
+  const [movies, setMovies] = useState(tempMovieData);
+  const [watched, setWatched] = useState(tempWatchedData);
 
-
+  const average = (arr) =>
+  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+  
   return (
     <>
-      <Navbar />
-      <main className="main">
-        <ListBox />
-        <WatchedBox />
+      {/* Component Composition~!~! Navbar receiving a children prop, Main receiving two, and Listbox receiving one within Main. */}
+      <Navbar>
+        <Search />
+        <NumResults movies={movies} />
+      </Navbar>
+      <Main>
+        <Box>
+          <MovieList movies={movies} />
+        </Box>
 
+      {/* We can also do something like this, which is referred to as passing elements as props 
+      <Main>
+        <Box element={<MovieList movies={movies} />} /> 
+            Box.jsx receives element as a prop.
+      This kind of pattern is used with ReactRouter
+      */}
+      
+        
+        <Box>
+          <Summary watched={watched} average={average}/>
+          <WatchedList watched={watched}/>
+        </Box>
 
-      </main>
+      </Main>
     </>
   );
 }

@@ -1,3 +1,4 @@
+//! Presentational / Stateless Component
 function WatchedMovie({ movie }) {
   return (
     <li>
