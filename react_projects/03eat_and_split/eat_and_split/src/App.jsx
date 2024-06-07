@@ -23,7 +23,7 @@ const initialFriends = [
     name: "Scott",
     image: "https://i.pravatar.cc/48?u=499476",
     balance: 0,
-  }
+  },
 ];
 
 function App() {
@@ -43,40 +43,46 @@ function App() {
   }
 
   function handleSelection(friend) {
-    setSelectedFriend(current => current?.id === friend.id ? null : friend);
+    setSelectedFriend((current) => (current?.id === friend.id ? null : friend));
     setShowAddFriend(false);
   }
 
   function handleSplitBill(value) {
     // console.log(value);
-    setFriends((friends) => 
-        friends.map((friend) =>
-          friend.id === selectedFriend.id 
-          ? {...friend, balance: friend.balance + value}
+    setFriends((friends) =>
+      friends.map((friend) =>
+        friend.id === selectedFriend.id
+          ? { ...friend, balance: friend.balance + value }
           : friend
-    )
-  );
+      )
+    );
   }
 
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList 
+        <FriendsList
           friends={friends}
           selectedFriend={selectedFriend}
           onSelection={handleSelection}
         />
 
-        {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend}/>}
+        {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
         {/* Since this is NOT an HTML button, we need to send onClick as a prop to the actual button in the component. */}
         <Button onClick={handleShowAddFriend}>
-          {showAddFriend ? 'Close' : 'Add Friend'}</Button>
+          {showAddFriend ? "Close" : "Add Friend"}
+        </Button>
       </div>
 
-
-      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} onSplitBill={handleSplitBill}/>}
+      {selectedFriend && (
+        <FormSplitBill
+          selectedFriend={selectedFriend}
+          onSplitBill={handleSplitBill}
+          key={selectedFriend.id}
+        />
+      )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
