@@ -76,6 +76,7 @@ function TabContent({ item }) {
     //! Because of batching and asynchronous action, below are still just 0 + 1, it's not cumalative.
     // setLikes(likes + 1);
     // setLikes(likes + 1);
+    
     //! Using callbacks, we do get access to the updated state
     setLikes((likes) => likes + 1)
     setLikes((likes) => likes + 1)
