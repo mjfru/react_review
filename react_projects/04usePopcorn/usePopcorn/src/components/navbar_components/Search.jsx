@@ -1,8 +1,9 @@
 //! Stateful Component 
-import { useState } from "react";
-function Search() {
+// import { useState } from "react";
+function Search({ query, setQuery }) {
 
-  const [query, setQuery] = useState("");
+  //! Moved to parent component
+  // const [query, setQuery] = useState("");
   return (
     <input
         className="search"

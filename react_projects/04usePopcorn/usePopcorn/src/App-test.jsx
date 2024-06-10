@@ -7,6 +7,10 @@ import Box from "./components/main_components/Box";
 import Summary from "./components/main_components/Summary";
 import MovieList from "./components/main_components/MovieList";
 import WatchedList from "./components/main_components/WatchedList";
+import Loader from "./components/main_components/Loader";
+import ErrorMessage from "./components/main_components/ErrorMessage";
+import Movie from "./components/main_components/Movie";
+import MovieDetails from "./components/main_components/MovieDetails";
 
 const tempMovieData = [
   {
@@ -58,20 +62,77 @@ const tempWatchedData = [
 const KEY = "799bee64";
 
 function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
-  const query = "interstellar"
+  // Appears first in the code, will print second and only on the initial load.
+  // useEffect(function () {
+  //   console.log("After initial render");
+  // }, []);
+
+  // Prints last
+  // useEffect(function () {
+  //   console.log("After every render");
+  // });
+  // Effects run after the browser paint, so this will be first
+  // console.log("During render");
+
+  // useEffect(
+  //   function () {
+  //     console.log("D");
+  //   },
+  //   [query]
+  // );
+
+  function handleSelectMovie(id) {
+    setSelectedId(selectedId => id === selectedId ? null : id);
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
+
   //* Good practice, using useEffect to do something as soon as an application loads.
-  useEffect(function() {
-    async function fetchMovies() {
-      const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`)
-      const data = await res.json()
-      setMovies(data.Search);
-      console.log(data.Search);
-    }
-    fetchMovies();
-  }, []);
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setIsLoading(true);
+          setError("");
+
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
+
+          if (!res.ok)
+            throw new Error("Something went wrong with fetching movies :(");
+
+          const data = await res.json();
+          if (data.Response === "False") throw new Error("Movie not found.");
+
+          setMovies(data.Search);
+        } catch (err) {
+          console.log(err);
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      if (query.length < 1) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
+      fetchMovies();
+    },
+    [query]
+  );
 
   //! Bad practice, this will continously re-render, an infinite loop of state-setting
   // fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
@@ -87,12 +148,15 @@ function App() {
     <>
       {/* Component Composition~!~! Navbar receiving a children prop, Main receiving two, and Listbox receiving one within Main. */}
       <Navbar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </Navbar>
       <Main>
         <Box>
-          <MovieList movies={movies} />
+          {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
+          {isLoading && <Loader />}
+          {!isLoading && !error && <MovieList movies={movies} onSelectMovie={handleSelectMovie}/>}
+          {error && <ErrorMessage message={error} />}
         </Box>
 
         {/* We can also do something like this, which is referred to as passing elements as props 
@@ -103,8 +167,14 @@ function App() {
       */}
 
         <Box>
-          <Summary watched={watched} average={average} />
-          <WatchedList watched={watched} />
+          {selectedId ? (
+            <MovieDetails selectedId={selectedId} onCloseMovie={handleCloseMovie} KEY={KEY}/>
+          ) : (
+            <>
+              <Summary watched={watched} average={average} />
+              <WatchedList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
