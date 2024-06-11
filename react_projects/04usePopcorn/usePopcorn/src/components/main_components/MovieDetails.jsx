@@ -2,10 +2,25 @@ import { useEffect, useState } from "react";
 import StarRating from "../utility_components/StarRating";
 import Loader from "./Loader";
 
-function MovieDetails({ selectedId, onCloseMovie, KEY }) {
+function MovieDetails({
+  selectedId,
+  onCloseMovie,
+  KEY,
+  onAddWatched,
+  watched,
+}) {
   // We get back an object from our API call, so we set the initial state to an empty object.
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState("");
+
+  // Derived State
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  // console.log(isWatched);
+
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
 
   const {
     Title: title,
@@ -39,6 +54,47 @@ function MovieDetails({ selectedId, onCloseMovie, KEY }) {
     [selectedId]
   );
 
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `${title}`;
+      //! Cleanup!
+      return function () {
+        document.title = "usePopcorn";
+      };
+    },
+    [title]
+  );
+
+  function handleAdd() {
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+      userRating,
+    };
+
+    onAddWatched(newWatchedMovie);
+    onCloseMovie();
+  }
+
+  useEffect(function () {
+    function callback(e) {
+      if (e.code === "Escape") {
+        onCloseMovie();
+      }
+    }
+    document.addEventListener("keydown", callback);
+
+    //! Cleanup the event listener
+    return function () {
+      document.removeEventListener("keydown", callback);
+    };
+  });
+
   return (
     <div className="details">
       {isLoading ? (
@@ -64,7 +120,24 @@ function MovieDetails({ selectedId, onCloseMovie, KEY }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={24} />
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      + Add to List
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  You rated this movie {watchedUserRating} <span>⭐</span>
+                </p>
+              )}
             </div>
             <p>
               <em>{plot}</em>

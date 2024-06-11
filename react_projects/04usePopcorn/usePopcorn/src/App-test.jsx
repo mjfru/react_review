@@ -89,23 +89,37 @@ function App() {
   // );
 
   function handleSelectMovie(id) {
-    setSelectedId(selectedId => id === selectedId ? null : id);
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
   }
 
   function handleCloseMovie() {
     setSelectedId(null);
   }
 
+  function handleAddWatched(movie) {
+    setWatched((watched) => [...watched, movie]);
+  }
+
+  function handleDeleteWatched(id) {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  }
+
+
+
   //* Good practice, using useEffect to do something as soon as an application loads.
   useEffect(
     function () {
+      // Logic to pause sending an API request until typing slows down / stops:
+      const controller = new AbortController();
+
       async function fetchMovies() {
         try {
           setIsLoading(true);
           setError("");
 
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            { signal: controller.signal }
           );
 
           if (!res.ok)
@@ -115,9 +129,12 @@ function App() {
           if (data.Response === "False") throw new Error("Movie not found.");
 
           setMovies(data.Search);
+          setError("");
         } catch (err) {
           console.log(err);
-          setError(err.message);
+          if (err.name !== "AbortError") {
+            setError(err.message);
+          }
         } finally {
           setIsLoading(false);
         }
@@ -129,7 +146,12 @@ function App() {
         return;
       }
 
+      handleCloseMovie();
       fetchMovies();
+      // We want to cancel the current request each time a new one (key stroke changing the query) comes in.
+      return function () {
+        controller.abort();
+      };
     },
     [query]
   );
@@ -155,7 +177,9 @@ function App() {
         <Box>
           {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
           {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} onSelectMovie={handleSelectMovie}/>}
+          {!isLoading && !error && (
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+          )}
           {error && <ErrorMessage message={error} />}
         </Box>
 
@@ -168,11 +192,20 @@ function App() {
 
         <Box>
           {selectedId ? (
-            <MovieDetails selectedId={selectedId} onCloseMovie={handleCloseMovie} KEY={KEY}/>
+            <MovieDetails
+              selectedId={selectedId}
+              onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatched}
+              KEY={KEY}
+              watched={watched}
+            />
           ) : (
             <>
               <Summary watched={watched} average={average} />
-              <WatchedList watched={watched} />
+              <WatchedList
+                watched={watched}
+                onDeleteWatched={handleDeleteWatched}
+              />
             </>
           )}
         </Box>
