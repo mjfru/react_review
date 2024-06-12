@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-import App from './App-test.jsx'
+import App from './App-final.jsx'
 import './index.css'
 
 import StarRating from "./components/utility_components/StarRating";

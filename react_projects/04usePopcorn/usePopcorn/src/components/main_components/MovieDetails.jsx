@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import StarRating from "../utility_components/StarRating";
 import Loader from "./Loader";
+import { useKey } from "../../useKey";
 
 function MovieDetails({
   selectedId,
@@ -13,6 +14,18 @@ function MovieDetails({
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
+
+  // useRef - Keep track of how many times a user changes their rating but don't display this information on the UI.
+  // This will store the amount of clicks, initialized at 0.
+  const countRef = useRef(0);
+
+  useEffect(
+    function () {
+      if (userRating) countRef.current++;
+    },
+    // Each time the userRating changes, the ref updates as well, adding + 1
+    [userRating]
+  );
 
   // Derived State
   const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
@@ -35,7 +48,22 @@ function MovieDetails({
     Genre: genre,
   } = movie;
 
-  console.log(title, year);
+  // console.log(title, year);
+
+  //* Some useState & useEffect learning & experimentation:
+  // React only looks at the initial state (rating > 8) once and, since nothing is rendered that would trigger this on the initial render, it will remain false.
+  //? const [isTop, setIsTop] = useState(imdbRating > 8);
+  //? console.log(isTop); // false
+  // useEffect to the rescue!
+  //? useEffect(
+  //?   function () {
+  //?     setIsTop(imdbRating > 8);
+  //?   },
+  //?   [imdbRating]
+  //? );
+  // What we should have done from the beginning, however, is use derived state...
+  const isTop = imdbRating > 8;
+  console.log(isTop);
 
   useEffect(
     function () {
@@ -75,25 +103,30 @@ function MovieDetails({
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecisions: countRef.current,
     };
 
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
 
-  useEffect(function () {
-    function callback(e) {
-      if (e.code === "Escape") {
-        onCloseMovie();
-      }
-    }
-    document.addEventListener("keydown", callback);
+  useKey('Escape', onCloseMovie);
+  // useEffect(
+  //   function () {
+  //     function callback(e) {
+  //       if (e.code === "Escape") {
+  //         onCloseMovie();
+  //       }
+  //     }
+  //     document.addEventListener("keydown", callback);
 
-    //! Cleanup the event listener
-    return function () {
-      document.removeEventListener("keydown", callback);
-    };
-  });
+  //     //! Cleanup the event listener
+  //     return function () {
+  //       document.removeEventListener("keydown", callback);
+  //     };
+  //   },
+  //   [onCloseMovie]
+  // );
 
   return (
     <div className="details">
