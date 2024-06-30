@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
+import Page from "./Page";
+import Axios from "axios";
 
 export default function HomeGuest() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      await Axios.post("http://localhost:8080/register", {
+        username,
+        email,
+        password,
+      });
+      console.log("User successfully created.");
+    } catch (e) {
+      console.log("An error occurred.");
+    }
+  }
+
   return (
     <>
-      <div className="container py-md-5">
+      <Page wide={true} title="Welcome!">
         <div className="row align-items-center">
-          <div className="col-lg-7 py-3 py-md-5">
+          <div className="py-3 col-lg-7 py-md-5">
             <h1 className="display-3">Remember Writing?</h1>
             <p className="lead text-muted">
               Are you sick of short tweets and impersonal &ldquo;shared&rdquo;
@@ -14,13 +34,14 @@ export default function HomeGuest() {
               the internet again.
             </p>
           </div>
-          <div className="col-lg-5 pl-lg-5 pb-3 py-lg-5">
-            <form>
+          <div className="pb-3 col-lg-5 pl-lg-5 py-lg-5">
+            <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="username-register" className="text-muted mb-1">
+                <label htmlFor="username-register" className="mb-1 text-muted">
                   <small>Username</small>
                 </label>
                 <input
+                  onChange={(e) => setUsername(e.target.value)}
                   id="username-register"
                   name="username"
                   className="form-control"
@@ -30,10 +51,11 @@ export default function HomeGuest() {
                 />
               </div>
               <div className="form-group">
-                <label for="email-register" className="text-muted mb-1">
+                <label htmlFor="email-register" className="mb-1 text-muted">
                   <small>Email</small>
                 </label>
                 <input
+                  onChange={(e) => setEmail(e.target.value)}
                   id="email-register"
                   name="email"
                   className="form-control"
@@ -43,10 +65,11 @@ export default function HomeGuest() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="password-register" className="text-muted mb-1">
+                <label htmlFor="password-register" className="mb-1 text-muted">
                   <small>Password</small>
                 </label>
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   id="password-register"
                   name="password"
                   className="form-control"
@@ -63,7 +86,7 @@ export default function HomeGuest() {
             </form>
           </div>
         </div>
-      </div>
+      </Page>
     </>
   );
 }

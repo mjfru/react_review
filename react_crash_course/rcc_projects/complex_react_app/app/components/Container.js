@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 
-export default class Container extends Component {
-  render() {
-    return <div>Container</div>;
-  }
+function Container({ children, wide }) {
+  return (
+    <div
+      className={"container py-md-5 " + (wide ? "" : "container--narrow")}
+    >
+      {children}
+    </div>
+  );
 }
+
+export default Container;
