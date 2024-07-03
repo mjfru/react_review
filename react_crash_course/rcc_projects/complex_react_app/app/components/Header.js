@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import HeaderLoggedIn from "./HeaderLoggedIn";
 import HeaderLoggedOut from "./HeaderLoggedOut";
 
-function Header() {
-  const [loggedIn, setLoggedIn] = useState(false);
+function Header({ loggedIn, setLoggedIn }) {
+
 
   return (
     <>

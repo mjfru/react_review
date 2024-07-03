@@ -8,15 +8,18 @@ export default function HeaderLoggedOut({ setLoggedIn }) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await Axios.post("http://localhost:8080/login", {
+      const response = await Axios.post("/login", {
         username,
         password,
       });
       if (response.data) {
-        console.log(response.data);
+        localStorage.setItem("complexAppToken", response.data.token);
+        localStorage.setItem("complexAppUsername", response.data.username);
+        localStorage.setItem("complexAppAvatar", response.data.avatar);
+        // console.log(response.data);
         setLoggedIn(true);
       } else {
-        console.log('Incorrect username/password')
+        console.log("Incorrect username/password");
       }
     } catch (e) {
       console.log("An error has occured.");

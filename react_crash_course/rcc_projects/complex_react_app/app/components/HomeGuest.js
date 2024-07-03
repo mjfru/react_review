@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Page from "./Page";
-import Axios from "axios";
+import axios from "axios";
 
 export default function HomeGuest() {
   const [username, setUsername] = useState("");
@@ -10,7 +10,7 @@ export default function HomeGuest() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await Axios.post("http://localhost:8080/register", {
+      await axios.post("/register", {
         username,
         email,
         password,
