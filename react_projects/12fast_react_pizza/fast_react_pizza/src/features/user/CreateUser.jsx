@@ -1,11 +1,23 @@
 import { useState } from "react";
 import Button from "../../ui/Button";
+import { useDispatch } from "react-redux";
+import { updateName } from "./userSlice";
+import { useNavigate } from "react-router-dom";
 
 function CreateUser() {
   const [username, setUsername] = useState("");
+  // Provided by Redux:
+  const dispatch = useDispatch();
+  // For redirecting after entering a name:
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!username) return;
+    // updateName is defined in the userSlice
+    // This username becomes the action.payload which is assigned to username.
+    dispatch(updateName(username));
+    navigate("/menu");
   }
 
   return (
@@ -24,7 +36,7 @@ function CreateUser() {
 
       {username !== "" && (
         <div>
-          <Button>Start ordering</Button>
+          <Button type="primary">Start ordering</Button>
         </div>
       )}
     </form>
