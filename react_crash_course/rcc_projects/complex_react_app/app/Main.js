@@ -11,25 +11,37 @@ import About from "./components/About";
 import Terms from "./components/Terms";
 import Home from "./components/Home";
 import CreatePost from "./components/CreatePost";
+import FlashMessages from "./components/FlashMessages";
 import ViewSinglePost from "./components/ViewSinglePost";
+import ExampleContext from "./ExampleContext";
 
 function Main() {
   const [loggedIn, setLoggedIn] = useState(
     Boolean(localStorage.getItem("complexAppToken"))
   );
+  const [flashMessages, setFlashMessages] = useState([]);
+
+  function addFlashMessage(msg) {
+    // Concat doesn't modify or change anything; returns a new array
+    setFlashMessages((prev) => prev.concat(msg));
+  }
 
   return (
-    <BrowserRouter>
-      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-      <Routes>
-        <Route path="/" element={loggedIn ? <Home /> : <HomeGuest />} />
-        <Route path="/post/:id" element={<ViewSinglePost/>} />
-        <Route path="/create-post" element={<CreatePost />} />
-        <Route path="/about-us" element={<About />} />
-        <Route path="/terms" element={<Terms />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    //? Whatever we include in the value, any child component will be able to acces it
+    <ExampleContext.Provider value={{ addFlashMessage, setLoggedIn }}>
+      <BrowserRouter>
+        <FlashMessages messages={flashMessages} />
+        <Header loggedIn={loggedIn} />
+        <Routes>
+          <Route path="/" element={loggedIn ? <Home /> : <HomeGuest />} />
+          <Route path="/post/:id" element={<ViewSinglePost />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/about-us" element={<About />} />
+          <Route path="/terms" element={<Terms />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </ExampleContext.Provider>
   );
 }
 
