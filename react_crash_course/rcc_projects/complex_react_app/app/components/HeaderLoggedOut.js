@@ -1,7 +1,10 @@
 import Axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import ExampleContext from "../ExampleContext";
 
-export default function HeaderLoggedOut({ setLoggedIn }) {
+export default function HeaderLoggedOut(props) {
+  const { setLoggedIn } = useContext(ExampleContext);
+
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -16,7 +19,6 @@ export default function HeaderLoggedOut({ setLoggedIn }) {
         localStorage.setItem("complexAppToken", response.data.token);
         localStorage.setItem("complexAppUsername", response.data.username);
         localStorage.setItem("complexAppAvatar", response.data.avatar);
-        // console.log(response.data);
         setLoggedIn(true);
       } else {
         console.log("Incorrect username/password");
