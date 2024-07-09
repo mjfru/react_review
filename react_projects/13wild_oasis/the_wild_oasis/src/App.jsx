@@ -10,6 +10,9 @@ import Account from "./pages/Account";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 
+
+
+
 export default function App() {
   return (
     <>
