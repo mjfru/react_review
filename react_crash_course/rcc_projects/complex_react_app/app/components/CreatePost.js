@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Page from "./Page";
 import axios from "axios";
 import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 
 function CreatePost(props) {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
   const navigate = useNavigate();
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,9 +19,12 @@ function CreatePost(props) {
       const response = await axios.post("/create-post", {
         title,
         body,
-        token: localStorage.getItem("complexAppToken"),
+        token: appState.user.token,
       });
-      appDispatch({ type: "flashMessage", value: "Post successfully created!"})
+      appDispatch({
+        type: "flashMessage",
+        value: "Post successfully created!",
+      });
       // Redirect to new post URL:
       navigate(`/post/${response.data}`);
       console.log("New post was created.");
