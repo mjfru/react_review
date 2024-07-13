@@ -18,6 +18,7 @@ export default function Profile() {
   const appState = useContext(StateContext);
 
   useEffect(() => {
+    const ourRequest = new AbortController();
     async function fetchData() {
       try {
         const response = await axios.post(`/profile/${username}`, {
@@ -29,6 +30,9 @@ export default function Profile() {
       }
     }
     fetchData();
+    return () => {
+      ourRequest.abort();
+    };
   }, []);
 
   return (

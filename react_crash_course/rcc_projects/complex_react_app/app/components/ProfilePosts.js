@@ -9,6 +9,7 @@ export default function ProfilePosts() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    const ourRequest = new AbortController();
     async function fetchPosts() {
       try {
         const response = await axios.get(`/profile/${username}/posts`);
@@ -20,6 +21,9 @@ export default function ProfilePosts() {
       }
     }
     fetchPosts();
+    return () => {
+      ourRequest.abort();
+    };
   }, []);
 
   if (isLoading) return <LoadingDotsIcon />;

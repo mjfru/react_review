@@ -3,6 +3,8 @@ import Page from "./Page";
 import LoadingDotsIcon from "./LoadingDotsIcon";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
+import { Tooltip } from "react-tooltip";
 
 export default function ViewSinglePost() {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,9 +12,13 @@ export default function ViewSinglePost() {
   const { id } = useParams();
 
   useEffect(() => {
+    const ourRequest = new AbortController();
+
     async function fetchPost() {
       try {
-        const response = await axios.get(`/post/${id}/`);
+        const response = await axios.get(`/post/${id}/`, {
+          signal: ourRequest.signal,
+        });
         setPost(response.data);
         setIsLoading(false);
       } catch (e) {
@@ -20,9 +26,19 @@ export default function ViewSinglePost() {
       }
     }
     fetchPost();
+    // Clean-up function; cancelling the axios request
+    // When a component is unmounted, you want to clean up what this component was doing.
+    return () => {
+      ourRequest.abort();
+    };
   }, []);
 
-  if (isLoading) return <Page title="..."><LoadingDotsIcon/></Page>;
+  if (isLoading)
+    return (
+      <Page title="...">
+        <LoadingDotsIcon />
+      </Page>
+    );
 
   const date = new Date(post.createdDate);
   const dateFormatted = `${
@@ -34,12 +50,23 @@ export default function ViewSinglePost() {
       <div className="d-flex justify-content-between">
         <h2>{post.title}</h2>
         <span className="pt-2">
-          <a href="#" className="mr-2 text-primary" title="Edit">
+          <a
+            href="#"
+            data-tooltip-content="Edit"
+            data-tooltip-id="edit"
+            className="mr-2 text-primary"
+          >
             <i className="fas fa-edit"></i>
           </a>
-          <a className="delete-post-button text-danger" title="Delete">
+          <Tooltip id="edit" className="custom-tooltip" />{" "}
+          <a
+            className="delete-post-button text-danger"
+            data-tooltip-content="Delete"
+            data-tooltip-id="delete"
+          >
             <i className="fas fa-trash"></i>
           </a>
+          <Tooltip id="delete" className="custom-tooltip" />
         </span>
       </div>
 
@@ -54,7 +81,23 @@ export default function ViewSinglePost() {
         on {dateFormatted}
       </p>
 
-      <div className="body-content">{post.body}</div>
+      <div className="body-content">
+        <ReactMarkdown
+          children={post.body}
+          allowedElements={[
+            "p",
+            "br",
+            "strong",
+            "em",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+          ]}
+        />
+      </div>
     </Page>
   );
 }
