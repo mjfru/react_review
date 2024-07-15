@@ -30,4 +30,8 @@ function ourReducer(state, action) {
       return {loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value)}
   }
 }
+
+! Introducing Immer
+* Immer gives us a 'draft/carbon copy' of state, which we can directly mutate.
+
 */
