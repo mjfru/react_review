@@ -1,7 +1,8 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { useImmerReducer } from "use-immer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
@@ -21,6 +22,9 @@ import FlashMessages from "./components/FlashMessages";
 import ViewSinglePost from "./components/ViewSinglePost";
 import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
+import NotFound from "./components/NotFound";
+import Search from "./components/Search";
+import { isDraft } from "immer";
 
 function Main() {
   const initialState = {
@@ -31,6 +35,7 @@ function Main() {
       username: localStorage.getItem("complexAppUsername"),
       avatar: localStorage.getItem("complexAppAvatar"),
     },
+    isSearchOpen: false,
   };
 
   // Immer gives us a copy of state we are free to change and modify; it then hands it off to React when we're doing.
@@ -51,6 +56,11 @@ function Main() {
       //   loggedIn: state.loggedIn,
       //   flashMessages: state.flashMessages.concat(action.value),
       // };
+      case "openSearch":
+        state.isSearchOpen = true;
+        return;
+      case "closeSearch":
+        state.isSearchOpen = false;
     }
   }
 
@@ -86,7 +96,16 @@ function Main() {
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
+          <CSSTransition
+            timeout={330}
+            in={state.isSearchOpen}
+            classNames="search-overlay"
+            unmountOnExit
+          >
+            <Search />
+          </CSSTransition>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

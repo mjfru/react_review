@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Page from "./Page";
 import LoadingDotsIcon from "./LoadingDotsIcon";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import { Tooltip } from "react-tooltip";
+import NotFound from "./NotFound";
+import StateContext from "../StateContext";
+import DispatchContext from "../DispatchContext";
 
 export default function ViewSinglePost() {
+  const navigate = useNavigate();
+  const appState = useContext(StateContext);
+  const appDispatch = useContext(DispatchContext);
+  const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState();
-  const { id } = useParams();
 
   useEffect(() => {
     const ourRequest = new AbortController();
@@ -33,6 +39,10 @@ export default function ViewSinglePost() {
     };
   }, []);
 
+  if (!isLoading && !post) {
+    return <NotFound />;
+  }
+
   if (isLoading)
     return (
       <Page title="...">
@@ -45,29 +55,63 @@ export default function ViewSinglePost() {
     date.getMonth() + 1
   }/${date.getDate()}/${date.getFullYear()}`;
 
+  function isOwner() {
+    if (appState.loggedIn) {
+      return appState.user.username == post.author.username;
+    }
+    return false;
+  }
+
+  async function deleteHandler() {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(`/post/${id}`, {
+          data: { token: appState.user.token },
+        });
+        if (response.data == "Success") {
+          // 1. Display a flash message
+          appDispatch({
+            type: "flashMessage",
+            value: "Post was succesfully deleted.",
+          });
+          // 2. Redirect to current user's profile
+          navigate(`/profile/${appState.user.username}`);
+        }
+      } catch (e) {
+        console.log("There was a problem with deleting this post.");
+      }
+    }
+  }
+
   return (
     <Page title={post.title}>
       <div className="d-flex justify-content-between">
         <h2>{post.title}</h2>
-        <span className="pt-2">
-          <Link
-            to={`/post/${post._id}/edit`}
-            data-tooltip-content="Edit"
-            data-tooltip-id="edit"
-            className="mr-2 text-primary"
-          >
-            <i className="fas fa-edit"></i>
-          </Link>
-          <Tooltip id="edit" className="custom-tooltip" />{" "}
-          <a
-            className="delete-post-button text-danger"
-            data-tooltip-content="Delete"
-            data-tooltip-id="delete"
-          >
-            <i className="fas fa-trash"></i>
-          </a>
-          <Tooltip id="delete" className="custom-tooltip" />
-        </span>
+        {isOwner() && (
+          <span className="pt-2">
+            <Link
+              to={`/post/${post._id}/edit`}
+              data-tooltip-content="Edit"
+              data-tooltip-id="edit"
+              className="mr-2 text-primary"
+            >
+              <i className="fas fa-edit"></i>
+            </Link>
+            <Tooltip id="edit" className="custom-tooltip" />{" "}
+            <a
+              onClick={deleteHandler}
+              className="delete-post-button text-danger"
+              data-tooltip-content="Delete"
+              data-tooltip-id="delete"
+            >
+              <i className="fas fa-trash"></i>
+            </a>
+            <Tooltip id="delete" className="custom-tooltip" />
+          </span>
+        )}
       </div>
 
       <p className="mb-4 text-muted small">
