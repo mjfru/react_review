@@ -1,6 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import DispatchContext from "../DispatchContext";
+import axios from "axios";
 import { useImmer } from "use-immer";
+import { Link } from "react-router-dom";
+import DispatchContext from "../DispatchContext";
+import Post from "./Post";
 
 export default function Search() {
   const appDispatch = useContext(DispatchContext);
@@ -13,6 +16,12 @@ export default function Search() {
     requestCount: 0,
   });
 
+  function searchKeyPressHandler(e) {
+    if (e.keyCode === 27) {
+      appDispatch({ type: "closeSearch" });
+    }
+  }
+
   useEffect(() => {
     document.addEventListener("keyup", searchKeyPressHandler);
     // Cleaning up:
@@ -20,26 +29,52 @@ export default function Search() {
   }, []);
 
   useEffect(() => {
-    const delay = setTimeout(() => {
-      setState(draft => {
-        draft.requestCount++
-      })
-    }, 2000)
-    // Cleanup function so a query is not set on every key press
-    return () => clearTimeout(delay)
+    if (state.searchTerm.trim()) {
+      setState((draft) => {
+        draft.show = "loading";
+      });
+      const delay = setTimeout(() => {
+        setState((draft) => {
+          draft.requestCount++;
+        });
+      }, 800);
+      // Cleanup function so a query is not set on every key press
+      return () => clearTimeout(delay);
+    } else {
+      setState((draft) => {
+        draft.show = "neither";
+      });
+    }
   }, [state.searchTerm]);
 
   useEffect(() => {
-    if(state.requestCount) {
-      // Send axios request here:
-    }
-  }, [state.requestCount])
+    if (state.requestCount) {
+      // Making a cancel token variable to cancel the axios request if this compount unmounts in the middle of making it.
+      const ourRequest = axios.CancelToken.source();
 
-  function searchKeyPressHandler(e) {
-    if (e.keyCode === 27) {
-      appDispatch({ type: "closeSearch" });
+      async function fetchResults() {
+        try {
+          const response = await axios.post(
+            // The URL we're sending a request to:
+            "/search",
+            // Data we want to send along; expecting a property of searchTerm
+            { searchTerm: state.searchTerm },
+            // Cancel token
+            { cancelToken: ourRequest.token }
+          );
+          setState((draft) => {
+            draft.results = response.data;
+            draft.show = "results";
+          });
+        } catch (e) {
+          console.log("There was a problem or the request was cancelled.");
+        }
+      }
+      fetchResults();
+      // Cleanup
+      return () => ourRequest.cancel();
     }
-  }
+  }, [state.requestCount]);
 
   function handleInput(e) {
     const value = e.target.value;
@@ -76,42 +111,43 @@ export default function Search() {
 
         <div className="search-overlay-bottom">
           <div className="container py-3 container--narrow">
-            <div className="live-search-results live-search-results--visible">
-              <div className="shadow-sm list-group">
-                <div className="list-group-item active">
-                  <strong>Search Results</strong> (3 items found)
+            <div
+              className={
+                "circle-loader " +
+                (state.show == "loading" ? "circle-loader--visible" : "")
+              }
+            ></div>
+
+            <div
+              className={
+                "live-search-results " +
+                (state.show == "results" ? "live-search-results--visible" : "")
+              }
+            >
+              {Boolean(state.results.length) && (
+                <div className="shadow-sm list-group">
+                  <div className="list-group-item active">
+                    <strong>Search Results</strong> ({state.results.length}{" "}
+                    {state.results.length > 1 ? "items " : "item "}
+                    found)
+                  </div>
+
+                  {state.results.map((post) => {
+                    return (
+                      <Post
+                        post={post}
+                        key={post._id}
+                        onClick={() => appDispatch({ type: "closeSearch" })}
+                      />
+                    );
+                  })}
                 </div>
-                <a href="#" className="list-group-item list-group-item-action">
-                  <img
-                    className="avatar-tiny"
-                    src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128"
-                  />{" "}
-                  <strong>Example Post #1</strong>
-                  <span className="text-muted small">
-                    by brad on 2/10/2020{" "}
-                  </span>
-                </a>
-                <a href="#" className="list-group-item list-group-item-action">
-                  <img
-                    className="avatar-tiny"
-                    src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128"
-                  />{" "}
-                  <strong>Example Post #2</strong>
-                  <span className="text-muted small">
-                    by barksalot on 2/10/2020{" "}
-                  </span>
-                </a>
-                <a href="#" className="list-group-item list-group-item-action">
-                  <img
-                    className="avatar-tiny"
-                    src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128"
-                  />{" "}
-                  <strong>Example Post #3</strong>
-                  <span className="text-muted small">
-                    by brad on 2/10/2020{" "}
-                  </span>
-                </a>
-              </div>
+              )}
+              {!Boolean(state.results.length) && (
+                <p className="text-center shadow-sm alert alert-danger">
+                  Sorry, we could not find any results for that search.
+                </p>
+              )}
             </div>
           </div>
         </div>
