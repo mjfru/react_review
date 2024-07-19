@@ -12,7 +12,7 @@ import DispatchContext from "./DispatchContext";
 
 // Components:
 import Header from "./components/Header";
-import HomeGuest from "./components/HomeGuest";
+import HomeGuestV2 from "./components/HomeGuestV2";
 import Footer from "./components/Footer";
 import About from "./components/About";
 import Terms from "./components/Terms";
@@ -24,7 +24,7 @@ import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
 import Search from "./components/Search";
-import { isDraft } from "immer";
+import Chat from "./components/Chat";
 
 function Main() {
   const initialState = {
@@ -36,6 +36,8 @@ function Main() {
       avatar: localStorage.getItem("complexAppAvatar"),
     },
     isSearchOpen: false,
+    isChatOpen: false,
+    unreadChatCount: 0,
   };
 
   // Immer gives us a copy of state we are free to change and modify; it then hands it off to React when we're doing.
@@ -61,6 +63,18 @@ function Main() {
         return;
       case "closeSearch":
         state.isSearchOpen = false;
+      case "toggleChat":
+        state.isChatOpen = !state.isChatOpen;
+        return;
+      case "closedChat":
+        state.isChatOpen = false;
+        return;
+      case "incrementUnreadChatCount":
+        state.unreadChatCount++;
+        return;
+      case "clearUnreadChatCount":
+        state.unreadChatCount = 0;
+        return;
     }
   }
 
@@ -78,6 +92,33 @@ function Main() {
     }
   }, [state.loggedIn]);
 
+  // Check if token has expired on first render
+  useEffect(() => {
+    if (state.loggedIn) {
+      const ourRequest = axios.CancelToken.source();
+      async function fetchResults() {
+        try {
+          const response = await axios.post(
+            "/checkToken",
+            { token: state.user.token },
+            { cancelToken: ourRequest.token }
+          );
+          if (!response.data) {
+            dispatch({ type: "logout" });
+            dispatch({
+              type: "flashMessage",
+              value: "Your session has expired. Please log in again.",
+            });
+          }
+        } catch (e) {
+          console.log("There was a problem or the request was cancelled.");
+        }
+      }
+      fetchResults();
+      return () => ourRequest.cancel();
+    }
+  }, []);
+
   return (
     //? Whatever we include in the value, any child component will be able to acces it
     <StateContext.Provider value={state}>
@@ -89,7 +130,7 @@ function Main() {
             <Route path="/profile/:username/*" element={<Profile />} />
             <Route
               path="/"
-              element={state.loggedIn ? <Home /> : <HomeGuest />}
+              element={state.loggedIn ? <Home /> : <HomeGuestV2 />}
             />
             <Route path="/post/:id" element={<ViewSinglePost />} />
             <Route path="/post/:id/edit" element={<EditPost />} />
@@ -106,6 +147,7 @@ function Main() {
           >
             <Search />
           </CSSTransition>
+          <Chat />
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>
