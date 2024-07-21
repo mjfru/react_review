@@ -10,6 +10,7 @@ export default function HeaderLoggedIn() {
 
   function handleLogout() {
     appDispatch({ type: "logout" });
+    appDispatch({ type: "flashMessage", value: "You have successfully logged out." })
     // localStorage.removeItem("complexAppToken");
     // localStorage.removeItem("complexAppUsername");
     // localStorage.removeItem("complexAppAvatar");

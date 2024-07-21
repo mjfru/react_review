@@ -85,70 +85,68 @@ export default function Search() {
 
   return (
     <>
-      <div className="search-overlay">
-        <div className="shadow-sm search-overlay-top">
-          <div className="container container--narrow">
-            <label htmlFor="live-search-field" className="search-overlay-icon">
-              <i className="fas fa-search"></i>
-            </label>
-            <input
-              onChange={handleInput}
-              autoFocus
-              type="text"
-              autoComplete="off"
-              id="live-search-field"
-              className="live-search-field"
-              placeholder="What are you interested in?"
-            />
-            <span
-              onClick={() => appDispatch({ type: "closeSearch" })}
-              className="close-live-search"
-            >
-              <i className="fas fa-times-circle"></i>
-            </span>
-          </div>
+      <div className="shadow-sm search-overlay-top">
+        <div className="container container--narrow">
+          <label htmlFor="live-search-field" className="search-overlay-icon">
+            <i className="fas fa-search"></i>
+          </label>
+          <input
+            onChange={handleInput}
+            autoFocus
+            type="text"
+            autoComplete="off"
+            id="live-search-field"
+            className="live-search-field"
+            placeholder="What are you interested in?"
+          />
+          <span
+            onClick={() => appDispatch({ type: "closeSearch" })}
+            className="close-live-search"
+          >
+            <i className="fas fa-times-circle"></i>
+          </span>
         </div>
+      </div>
 
-        <div className="search-overlay-bottom">
-          <div className="container py-3 container--narrow">
-            <div
-              className={
-                "circle-loader " +
-                (state.show == "loading" ? "circle-loader--visible" : "")
-              }
-            ></div>
+      <div className="search-overlay-bottom">
+        <div className="container py-3 container--narrow">
+          <div
+            className={
+              "circle-loader " +
+              (state.show == "loading" ? "circle-loader--visible" : "")
+            }
+          ></div>
 
-            <div
-              className={
-                "live-search-results " +
-                (state.show == "results" ? "live-search-results--visible" : "")
-              }
-            >
-              {Boolean(state.results.length) && (
-                <div className="shadow-sm list-group">
-                  <div className="list-group-item active">
-                    <strong>Search Results</strong> ({state.results.length}{" "}
-                    {state.results.length > 1 ? "items " : "item "}
-                    found)
-                  </div>
-
-                  {state.results.map((post) => {
-                    return (
-                      <Post
-                        post={post}
-                        key={post._id}
-                        onClick={() => appDispatch({ type: "closeSearch" })}
-                      />
-                    );
-                  })}
+          <div
+            className={
+              "live-search-results " +
+              (state.show == "results" ? "live-search-results--visible" : "")
+            }
+          >
+            {Boolean(state.results.length) && (
+              <div className="shadow-sm list-group">
+                <div className="list-group-item active">
+                  <strong>Search Results</strong> ({state.results.length}{" "}
+                  {state.results.length > 1 ? "items " : "item "}
+                  found)
                 </div>
-              )}
-              {!Boolean(state.results.length) && (
-                <p className="text-center shadow-sm alert alert-danger">
-                  Sorry, we could not find any results for that search.
-                </p>
-              )}
-            </div>
+
+                {state.results.map((post) => {
+                  return (
+                    <Post
+                      post={post}
+                      key={post._id}
+                      onClick={() => appDispatch({ type: "closeSearch" })}
+                    />
+                  );
+                })}
+              </div>
+            )}
+            {!Boolean(state.results.length) && (
+              <p className="text-center shadow-sm alert alert-danger">
+                Sorry, we could not find any results for that search.
+              </p>
+            )}
           </div>
         </div>
       </div>

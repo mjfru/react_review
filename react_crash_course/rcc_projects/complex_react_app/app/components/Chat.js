@@ -3,10 +3,11 @@ import StateContext from "../StateContext";
 import DispatchContext from "../DispatchContext";
 import { useImmer } from "use-immer";
 import io from "socket.io-client";
-const socket = io("http://localhost:8080");
+
 import { Link } from "react-router-dom";
 
 export default function Chat() {
+  const socket = useRef(null);
   const appState = useContext(StateContext);
   const appDispatch = useContext(DispatchContext);
   // useRef -- Similar to using a DOM selector, declared in the input below.
@@ -25,11 +26,14 @@ export default function Chat() {
   }, [appState.isChatOpen]);
 
   useEffect(() => {
-    socket.on("chatFromServer", (message) => {
+    socket.current = io("http://localhost:8080");
+    socket.current.on("chatFromServer", (message) => {
       setState((draft) => {
         draft.chatMessages.push(message);
       });
     });
+
+    return () => socket.current.disconnect();
   }, []);
 
   // Whenever the array of chatMessages changes, keep the chatbox scrolled to the bottom / newest message.
@@ -50,7 +54,7 @@ export default function Chat() {
   function handleSubmit(e) {
     e.preventDefault();
     // Send message to a chat server
-    socket.emit("chatFromBrowser", {
+    socket.current.emit("chatFromBrowser", {
       message: state.fieldValue,
       token: appState.user.token,
     });
