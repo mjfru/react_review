@@ -27,4 +27,18 @@ From Redux itself:
 ! Requests to change the state are sent to this single source by view components in the form of an action.
 ! Any components of the view that would be affected by these changes are informed by this single source.
 * By imposing this structure, Redux makes our code more readable, reliable, and maintainable.
+
+! State
+* State in a web application represents the current information that drives the application's behavior and appearance.
+* It acts as a centalized source of data, storing the essential details of the application at any given moment.
+
+Complex apps have a multitude of states to keep track of and passing down states through the component tree can become tedious and inefficient.
+Redux offers a consistent and predictable solution for state management.
+
+? With Redux, the state can be any JS type, including numbers, strings, booleans, and objects.
+const state = ['Print this out', 'Write emails']
+
 */
+
+//? Define the state of a playlist application in a state array:
+const state = ["Take Five", "Claire de Lune", "Respect"];
