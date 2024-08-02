@@ -13,6 +13,10 @@ import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Booking from "./pages/Booking";
+import Checkin from "./pages/Checkin";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 // React Query needs a place where data lives (cache) and then we provide it to the application.
 
@@ -30,20 +34,30 @@ const queryClient = new QueryClient({
 export default function App() {
   return (
     <>
+      <DarkModeProvider>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
         <BrowserRouter>
           <Routes>
-            <Route element={<AppLayout />}>
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="bookings" element={<Bookings />} />
+              <Route path="bookings/:bookingId" element={<Booking />} />
+              <Route path="checkin/:bookingId" element={<Checkin />} />
               <Route path="users" element={<Users />} />
               <Route path="settings" element={<Settings />} />
               <Route path="cabins" element={<Cabins />} />
               <Route path="account" element={<Account />} />
             </Route>
+
             <Route path="login" element={<Login />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
@@ -69,6 +83,7 @@ export default function App() {
           }}
         />
       </QueryClientProvider>
+      </DarkModeProvider>
     </>
   );
 }
