@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { getCabin, getCabins } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
+import TextExpander from "@/app/_components/TextExpander";
 
 //* Generating dynamic metadata with generateMetadata()
 export async function generateMetadata({ params }) {
@@ -57,7 +58,9 @@ export default async function Page({ params }) {
             Cabin {name}
           </h3>
 
-          <p className="mb-10 text-lg text-primary-300">{description}</p>
+          <p className="mb-10 text-lg text-primary-300">
+            <TextExpander>{description}</TextExpander>
+          </p>
 
           <ul className="flex flex-col gap-4 mb-7">
             <li className="flex items-center gap-3">
