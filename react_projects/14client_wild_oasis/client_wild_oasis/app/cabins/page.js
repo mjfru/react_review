@@ -1,19 +1,20 @@
 import { Suspense } from "react";
-import CabinCard from "../_components/CabinCard";
 import CabinList from "../_components/CabinList";
 // import Counter from "../_components/Counter";
-import { getCabins } from "../_lib/data-service";
 import Spinner from "../_components/Spinner";
 
 export const metadata = {
   title: "Cabins",
 };
 
+// Refresh / regenerate the data every hour
+// Good strategy if your data changes from time-to-time but not constantly.
+export const revalidate = 3600;
+
 export default function Page() {
   // Next.js makes this so simple, no useEffect, etc.
   // Moved to CabinList.js to implement suspense.
   // const cabins = await getCabins();
-
   return (
     <div>
       <h1 className="mb-5 text-4xl font-medium text-accent-400">
