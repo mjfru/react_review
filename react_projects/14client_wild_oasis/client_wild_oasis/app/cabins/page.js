@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import CabinList from "../_components/CabinList";
 // import Counter from "../_components/Counter";
 import Spinner from "../_components/Spinner";
+import Filter from "../_components/Filter";
 
 export const metadata = {
   title: "Cabins",
@@ -11,7 +12,9 @@ export const metadata = {
 // Good strategy if your data changes from time-to-time but not constantly.
 export const revalidate = 3600;
 
-export default function Page() {
+export default function Page({ searchParams }) {
+  const filter = searchParams?.capacity ?? "all";
+
   // Next.js makes this so simple, no useEffect, etc.
   // Moved to CabinList.js to implement suspense.
   // const cabins = await getCabins();
@@ -28,8 +31,13 @@ export default function Page() {
         away from home. The perfect spot for a peaceful, calm vacation. Welcome
         to paradise.
       </p>
-      <Suspense fallback={<Spinner/>}>
-        <CabinList />
+      
+      <div className="flex justify-end mb-8">
+        <Filter />
+      </div>
+
+      <Suspense fallback={<Spinner />} key={filter}>
+        <CabinList filter={filter} />
       </Suspense>
     </div>
   );
