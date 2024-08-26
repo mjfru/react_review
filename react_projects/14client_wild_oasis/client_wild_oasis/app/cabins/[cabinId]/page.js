@@ -17,7 +17,7 @@ export async function generateStaticParams() {
   const cabins = await getCabins();
   // Array of objects w/ an id
   const ids = cabins.map((cabin) => ({ cabinId: String(cabin.id) }));
-  console.log(ids);
+  // console.log(ids);
   return ids;
 }
 
@@ -37,7 +37,7 @@ export async function generateStaticParams() {
 //* Params is a default prop that we can use to get our cabinId to load specific data
 export default async function Page({ params }) {
   const cabin = await getCabin(params.cabinId);
-  console.log(params);
+  // console.log(params);
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
 
