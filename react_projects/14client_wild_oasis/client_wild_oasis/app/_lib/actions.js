@@ -48,6 +48,22 @@ export async function deleteReservation(bookingId) {
 	revalidatePath("/account/reservations");
 }
 
+export async function updateBooking(formData) {
+	console.log(formData);
+
+	// const { data, error } = await supabase
+	// 	.from("bookings")
+	// 	.update(updatedFields)
+	// 	.eq("id", id)
+	// 	.select()
+	// 	.single();
+
+	// if (error) {
+	// 	console.error(error);
+	// 	throw new Error("Booking could not be updated");
+	// }
+}
+
 export async function signInAction() {
 	await signIn("google", { redirectTo: "/account" });
 }
