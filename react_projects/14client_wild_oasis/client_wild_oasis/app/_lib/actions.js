@@ -29,7 +29,11 @@ export async function updateGuest(formData) {
 	revalidatePath("/account/profile");
 }
 
-export async function deleteReservation(bookingId) {
+export async function createBooking(bookingData, formData) {
+  console.log(formData);
+}
+
+export async function deleteBooking(bookingId) {
 	// For testing:
 	await new Promise((res) => setTimeout(res, 2000));
   // throw new Error();
