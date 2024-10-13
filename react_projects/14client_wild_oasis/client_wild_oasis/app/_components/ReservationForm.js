@@ -3,6 +3,7 @@
 import { differenceInDays } from "date-fns";
 import { useReservation } from "./ReservationContext";
 import { createBooking } from "../_lib/actions";
+import SubmitButton from "./SubmitButton";
 
 function ReservationForm({ cabin, user }) {
 	// CHANGE
@@ -45,7 +46,7 @@ function ReservationForm({ cabin, user }) {
 				// action={createBookingWithData}
 				action={async (formData) => {
 					await createBookingWithData(formData);
-          resetRange();
+					resetRange();
 				}}
 				className="flex flex-col gap-5 px-16 py-10 text-lg bg-primary-900"
 			>
@@ -81,11 +82,17 @@ function ReservationForm({ cabin, user }) {
 				</div>
 
 				<div className="flex items-center justify-end gap-6">
-					<p className="text-base text-primary-300">Start by selecting dates</p>
+					{!(startDate && endDate) ? (
+						<p className="text-base text-primary-300">
+							Start by selecting dates
+						</p>
+					) : (
+						<SubmitButton pendingLabel="Reserving...">Reserve Now</SubmitButton>
+					)}
 
-					<button className="px-8 py-4 font-semibold transition-all bg-accent-500 text-primary-800 hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
+					{/* <button className="px-8 py-4 font-semibold transition-all bg-accent-500 text-primary-800 hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
 						Reserve now
-					</button>
+					</button> */}
 				</div>
 			</form>
 		</div>
