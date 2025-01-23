@@ -18,4 +18,14 @@
 
 ? What happens when the dependency array of a useEffect is left empty ([])?
 * The effect runs only once during the component's initial render.
+
+! Conditional Rendering & Data Fetching Quiz
+? What is the primary purpose of using multiple returns in a React component?
+* To handle conditional rendering for scenarios like loading, error, or success states
+
+? What happens if you destructure a property from a null object in a React component?
+* JS throws an error, breaking the application
+
+? When using the fetch API, why is it necessary to check the resp.ok property after making a request?
+* To ensure the response status is successful (e.g. 200 OK)
 */
