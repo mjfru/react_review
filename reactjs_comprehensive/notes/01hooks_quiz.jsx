@@ -28,4 +28,23 @@
 
 ? When using the fetch API, why is it necessary to check the resp.ok property after making a request?
 * To ensure the response status is successful (e.g. 200 OK)
+
+! Conditional Rendering & Short-Circuit Logic Quiz
+? What is the output of the following JavaScript code snippet?
+  const x = '';
+  console.log(x || 'Default');
+  console.log(x && 'Default');
+* "Default" and ""
+
+? In the following React code, what happens if isEditing is false?
+  const [isEditing, setIsEditing] = useState(false);
+  return (
+    <button className='btn'>{isEditing ? 'edit' : 'add'}</button>
+  );
+* The button displays 'add'.
+
+? What will the following React component render when text is an empty string?
+  const [text, setText] = useState('');
+  return <h4>{text || 'Fallback Value'}</h4>;
+* 'Fallback Value' is displayed.
 */
