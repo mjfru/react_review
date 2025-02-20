@@ -41,6 +41,7 @@ const App = () => {
 		setItems(newItems);
 		setLocalStorage(newItems);
 		toast.success("Item added to your list.");
+    
 		//* Below is the non-local storage approach:
 		// setItems([...items, newItem]);
 	};
