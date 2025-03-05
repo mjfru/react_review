@@ -47,4 +47,106 @@
   const [text, setText] = useState('');
   return <h4>{text || 'Fallback Value'}</h4>;
 * 'Fallback Value' is displayed.
+
+! Project Structure (Imports & Exports) Quiz
+? Why might renaming Navbar.jsx to index.jsx be avoided in larger projects?
+* It can cause navigation difficulties when multiple index files are open.
+
+? How can you reduce import redundancy when importing multiple components from a directory?
+* By using an index.jsx file to group exports from the directory.
+
+? What is the purpose of using a Navbar.css file in the Navbar folder?
+* To store component-specific styles for the Navbar component.
+
+! Leveraging JavaScript Quiz
+? What is the purpose of the optional chaining operator (?.) in JavaScript?
+const person = {
+  name: { first: 'John', last: 'Doe' },
+};
+
+Without optional chaining
+console.log(person.name.first); // Output: 'John'
+
+With optional chaining
+console.log(person?.name?.first); // Output: 'John'
+console.log(person?.address?.city); // Output: undefined (no error)
+* The optional chaning operator (?.) checks if the object or property exists before trying to access it. If the property is null or undefined, it safely returns undefined without throwing an error. This is the main purpose of the operator.
+
+? In the Person component, what is the fallback value for the nickName prop?
+const Person = ({ name, nickName = 'shakeAndBake', images }) => {
+  return (
+    <div>
+      <h4>{name}</h4>
+      <p>Nickname: {nickName}</p>
+    </div>
+  );
+};
+
+Usage
+<Person name="John Doe" />;
+* In the component, the nickName prop has a default value of 'shakeAndBake' defined as a fallback when no value is provided.
+
+? In the Person component, what happens if the images array is undefined?
+JavaScript
+Copy codeimport avatar from './default-avatar.png';
+
+const Person = ({ name, images }) => {
+  const img = images?.[0]?.small?.url || avatar;
+  return (
+    <div>
+      <img src={img} alt={name} />
+      <h4>{name}</h4>
+    </div>
+  );
+};
+
+Usage
+<Person name="John Doe" images={undefined} />;
+
+* If the images array is undefined, the optional chaining operator (?.) ensures that the fallback avatar is used for the img variable.
+
+! Controlled Inputs & Forms in React
+? In the ControlledInputs component, what happens if you do not call e.preventDefault() in the handleSubmit function?
+* Without e.preventDefault(), the default browser behavior is triggered, which reloads the page upon form submission.
+
+? In the MultipleInputs component, what ensures that each input updates the correct property in the user state object?
+* The name attribute on each input allows the handleChange function to dynamically update the corresponding property in the state object using [e.target.name].
+
+? In the UncontrolledInputs component, how is the FormData API used to retrieve form data after submission?
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.currentTarget);
+  const newUser = Object.fromEntries(formData);
+  console.log(newUser);
+};
+
+* The FormData API reads input fields with a name attribute and generates key-value pairs, which are then converted to an object using Object.fromEntries.
+
+! useRef Quiz
+? What is the primary characteristic of the useRef hook?
+const refContainer = useRef(null);
+console.log(refContainer);
+{current: null}
+* It preserves values between renders without causing a re-render.
+
+? How does the useRef hook assist in accessing DOM nodes in the example below?
+const refContainer = useRef(null);
+
+useEffect(() => {
+  refContainer.current.focus();
+});
+
+* It stores a reference to the DOM node in its current property.
+
+? In the example below, what role does the isMounted reference serve?
+const isMounted = useRef(false);
+
+useEffect(() => {
+  if (!isMounted.current) {
+    isMounted.current = true;
+    return;
+  }
+  console.log('re-render');
+}, [value]);
+* It prevents certain actions from running during the initial render.
 */
