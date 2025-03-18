@@ -304,7 +304,7 @@ nav {
 /* This is a good approach if the values (links) will not be changing. We can't adjust the height automatically like this to add or subtract new elements */
 /*  160px / 10rem height value for nav container  */
 
-.links-container {
+/* .links-container {
 	height: 0;
 	overflow: hidden;
 	transition: var(--transition);
@@ -312,4 +312,65 @@ nav {
 
 .show-container {
 	height: 10rem;
+} */
+
+/* Dynamic Setup */
+.links-container {
+	overflow: hidden;
+	transition: var(--transition);
+}
+
+.social-icons {
+	display: none;
+}
+
+@media screen and (min-width: 800px) {
+	.nav-toggle {
+		display: none;
+	}
+	.nav-header {
+		padding: 0;
+	}
+
+	.nav-center {
+		max-width: 1170px;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem;
+		/* border: 2px solid seagreen; */
+	}
+
+	.links-container {
+		height: auto !important;
+	}
+
+  .links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .links a {
+    padding: 0;
+  }
+
+  .links a:hover {
+    padding: 0;
+    background: transparent;
+  }
+
+	.social-icons {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+  .social-icons a {
+    color: var(--primary-500);
+    transition: var(--transition);
+  }
+
+  .social-icons a:hover {
+    color: var(--primary-300);
+  }
 }
