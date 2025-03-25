@@ -6,7 +6,7 @@ import UseStateGotcha from "./tutorial/01-useState/starter/05-useState-gotcha";
 
 import UseEffectBasics from "./tutorial/02-useEffect/starter/02-useEffect-basics";
 import MultipleEffects from "./tutorial/02-useEffect/starter/03-multiple-effects";
-import FetchData from "./tutorial/02-useEffect/starter/04-fetch-data";
+// import FetchData from "./tutorial/02-useEffect/starter/04-fetch-data";
 import MultipleReturnsBasics from "./tutorial/03-conditional-rendering/starter/01-multiple-returns-basics";
 import MultipleReturnsFetchData from "./tutorial/03-conditional-rendering/starter/02-multiple-returns-fetch-data";
 
@@ -21,7 +21,10 @@ import CleanupFunction from "./tutorial/02-useEffect/starter/05-cleanup-function
 // import Home from "./tutorial/04-project-structure/starter/Navbar/pages/Home";
 // import About from "./tutorial/04-project-structure/starter/Navbar/pages/About";
 //? This is how (see pages --> index.js)
-import { Home, About } from "./tutorial/04-project-structure/starter/Navbar/pages";
+import {
+	Home,
+	About,
+} from "./tutorial/04-project-structure/starter/Navbar/pages";
 import { Example } from "./tutorial/04-project-structure/starter/Body";
 import List from "./tutorial/05-leverage-javascript/starter/List";
 import People from "./tutorial/05-leverage-javascript/starter/People";
@@ -32,7 +35,8 @@ import MultipleInputs from "./tutorial/06-forms/starter/03-multiple-inputs";
 import OtherInputs from "./tutorial/06-forms/starter/04-other-inputs";
 import UncontrolledInputs from "./tutorial/06-forms/starter/05-form-data";
 import UseRefBasics from "./tutorial/07-useRef/starter/01-useRef-basics";
-
+import ToggleExample from "./tutorial/08-custom-hooks/starter/01-toggle";
+import FetchData from "./tutorial/08-custom-hooks/starter/02-fetch-data";
 
 function App() {
 	return (
@@ -43,14 +47,14 @@ function App() {
 			{/* <UseStateArray /> */}
 			{/* <UseStateObject /> */}
 			{/* <UseStateGotcha /> */}
-			
-      {/* <UseEffectBasics /> */}
+
+			{/* <UseEffectBasics /> */}
 			{/* <MultipleEffects /> */}
 			{/* <FetchData /> */}
 			{/* <MultipleReturnsBasics /> */}
 			{/* <MultipleReturnsFetchData /> */}
-			
-      {/* <ShortCircuitOverview /> */}
+
+			{/* <ShortCircuitOverview /> */}
 			{/* <ShortCircuitExamples /> */}
 			{/* <ToggleChallenge /> */}
 			{/* <UserChallenge /> */}
@@ -61,17 +65,19 @@ function App() {
 			{/* <Home />
 			<About /> */}
 
-      {/* <Example /> */}
-      {/* <List />
+			{/* <Example /> */}
+			{/* <List />
       <People /> */}
 
-      {/* FORMS */}
-      {/* <ControlledInputs />
+			{/* FORMS */}
+			{/* <ControlledInputs />
       <UserChallenge /> */}
-      {/* <MultipleInputs />
+			{/* <MultipleInputs />
       <OtherInputs /> */}
-      {/* <UncontrolledInputs /> */}
-      <UseRefBasics />
+			{/* <UncontrolledInputs /> */}
+			{/* <UseRefBasics /> */}
+			<ToggleExample />
+			<FetchData />
 		</div>
 	);
 }
