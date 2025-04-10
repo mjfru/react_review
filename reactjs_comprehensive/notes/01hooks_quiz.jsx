@@ -221,4 +221,59 @@ const useFetch = (url) => {
 };
 
 * Unlike useFetchPerson, which is tailored for fetching user data, useFetch can handle any data structure and is more versatile.
+
+! useContext Quiz
+? What is the purpose of the GlobalContext.Provider in the Context API?
+
+import { createContext, useState } from 'react';
+
+const GlobalContext = createContext();
+
+const AppContext = ({ children }) => {
+  const [user, setUser] = useState({ name: 'bob' });
+  return (
+    <GlobalContext.Provider value={{ user, setUser }}>
+      {children}
+    </GlobalContext.Provider>
+  );
+};
+
+export { GlobalContext, AppContext };
+
+* To provide access to the user state and setUser function to all nested components; GlobalContext.Provider makes the user state and setUser available to any components wrapped within it.
+
+? In the following UserContainer component, what will be displayed when user is null?
+
+const UserContainer = ({ user, logout }) => {
+  return (
+    <div className='user-container'>
+      {user ? (
+        <>
+          <p>Hello There, {user.name.toUpperCase()}</p>
+          <button type='button' className='btn' onClick={logout}>
+            logout
+          </button>
+        </>
+      ) : (
+        <p>Please Login</p>
+      )}
+    </div>
+  );
+};
+export default UserContainer;
+
+* A paragraph with 'Please Login'.
+
+? Why would you use a custom hook with the Context API?
+
+import { useContext } from 'react';
+import { GlobalContext } from './context';
+
+const useGlobalContext = () => {
+  return useContext(GlobalContext);
+};
+
+export default useGlobalContext;
+
+* To simplify accessing context values & avoid important useContext over and over.
 */
