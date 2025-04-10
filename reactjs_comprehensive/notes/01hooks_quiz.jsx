@@ -149,4 +149,76 @@ useEffect(() => {
   console.log('re-render');
 }, [value]);
 * It prevents certain actions from running during the initial render.
+
+! Custom Hooks Quiz
+? What is the primary purpose of custom hooks in React?
+const useToggle = (defaultValue) => {
+  const [show, setShow] = useState(defaultValue);
+  const toggle = () => {
+    setShow(!show);
+  };
+  return { show, toggle };
+};
+
+* To extract reusable logic, reducing duplication and simplifying component code.
+
+? In the example below, what does the useFetchPerson custom hook return?
+const useFetchPerson = (url) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) {
+          setIsError(true);
+          setIsLoading(false);
+          return;
+        }
+        const user = await resp.json();
+        setUser(user);
+      } catch (error) {
+        setIsError(true);
+      }
+      setIsLoading(false);
+    };
+    fetchUser();
+  }, [url]);
+  
+  return { isLoading, isError, user };
+};
+
+* It returns an object containing the loading state, error state, and fetched user data.
+
+? How does the useFetch hook differ from useFetchPerson (above)?
+const useFetch = (url) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) {
+          setIsError(true);
+          setIsLoading(false);
+          return;
+        }
+        const response = await resp.json();
+        setData(response);
+      } catch (error) {
+        setIsError(true);
+      }
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [url]);
+
+  return { isLoading, isError, data };
+};
+
+* Unlike useFetchPerson, which is tailored for fetching user data, useFetch can handle any data structure and is more versatile.
 */
