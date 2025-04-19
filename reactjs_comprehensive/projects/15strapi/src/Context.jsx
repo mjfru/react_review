@@ -4,7 +4,8 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	// const [isModalOpen, setIsModalOpen] = useState(false);
+	const [pageId, setPageId] = useState(null);
 
 	const openSidebar = () => {
 		setIsSidebarOpen(true);
@@ -13,23 +14,25 @@ export const AppProvider = ({ children }) => {
 		setIsSidebarOpen(false);
 	};
 
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
+	// const openModal = () => {
+	// 	setIsModalOpen(true);
+	// };
 
-	const closeModal = () => {
-		setIsModalOpen(false);
-	};
+	// const closeModal = () => {
+	// 	setIsModalOpen(false);
+	// };
 
 	return (
 		<AppContext.Provider
 			value={{
 				isSidebarOpen,
-				isModalOpen,
-				openModal,
-				closeModal,
+				// isModalOpen,
+				// openModal,
+				// closeModal,
 				openSidebar,
 				closeSidebar,
+				pageId,
+				setPageId,
 			}}
 		>
 			{children}
