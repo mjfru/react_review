@@ -1,25 +1,60 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { data } from "../../../data";
 
+//! Default state, also for the useReducer hook
+const defaultState = {
+	people: data,
+};
+
+//? Setting up variables to take the place of your actions is a nice way to eliminate typos and guesswork:
+const CLEAR_LIST = "CLEAR_LIST";
+const RESET_LIST = "RESET_LIST";
+const REMOVE_ITEM = "REMOVE_ITEM";
+
+//! This reducer function will be passed into the useReducer hook
+//* This gets the state and an action
+const reducer = (state, action) => {
+	// Can use if or switch statements, use your preference:
+	if (action.type === CLEAR_LIST) {
+		return { ...state, people: [] };
+	}
+	if (action.type === RESET_LIST) {
+		return { ...state, people: data };
+	}
+	// Return state if actions don't match anything:
+	// return state;
+	// Or throw an error to help troubleshooting:
+	throw new Error(`No matching "${action.type}" - action type.`);
+};
+
 const ReducerBasics = () => {
-	const [people, setPeople] = useState(data);
+	//! Getting started with useReducer
+	//* We need to pass in a default state and a reducer, a function that manipulates the state
+	//* With useReducer, we get back a state and a dispatch (rather than a set... function)
+	const [state, dispatch] = useReducer(reducer, defaultState);
+
+	// const [people, setPeople] = useState(data);
 
 	const removeItem = (id) => {
-		let newPeople = people.filter((person) => person.id !== id);
-		setPeople(newPeople);
+		// let newPeople = people.filter((person) => person.id !== id);
+		// setPeople(newPeople);
 	};
 
 	const clearList = () => {
-		setPeople([]);
+		dispatch({ type: CLEAR_LIST });
+		// setPeople([]);
 	};
 
 	const resetList = () => {
-		setPeople(data);
+		dispatch({ type: RESET_LIST });
+		// setPeople(data);
 	};
+
+	console.log(state);
 
 	return (
 		<div>
-			{people.map((person) => {
+			{state.people.map((person) => {
 				const { id, name } = person;
 				return (
 					<div key={id} className="item">
@@ -28,7 +63,7 @@ const ReducerBasics = () => {
 					</div>
 				);
 			})}
-			{people.length !== 0 ? (
+			{state.people.length !== 0 ? (
 				<button
 					className="btn"
 					style={{ marginTop: "2rem" }}
