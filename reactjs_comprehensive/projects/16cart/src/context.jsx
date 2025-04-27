@@ -1,11 +1,27 @@
 import { useContext, useReducer, useEffect, createContext } from "react";
+import { reducer } from "./reducer";
+import {
+	CLEAR_CART,
+	REMOVE,
+	INCREASE,
+	DECREASE,
+	LOADING,
+	DISPLAY_ITEM,
+} from "./actions";
 
 const AppContext = createContext();
 
+const initialState = {
+	loading: false,
+	cart: [...cartItems],
+};
+
 export const AppProvider = ({ children }) => {
-	const greeting = "hello";
+	const [state, dispatch] = useReducer(reducer, initialState);
+
+	// const greeting = "hello";
 	return (
-		<AppContext.Provider value={{ greeting }}>{children}</AppContext.Provider>
+		<AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
 	);
 };
 
