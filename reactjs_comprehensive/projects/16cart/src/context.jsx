@@ -1,5 +1,7 @@
 import { useContext, useReducer, useEffect, createContext } from "react";
 import { reducer } from "./reducer";
+import cartItems from "./data";
+
 import {
 	CLEAR_CART,
 	REMOVE,
@@ -13,15 +15,26 @@ const AppContext = createContext();
 
 const initialState = {
 	loading: false,
-	cart: [...cartItems],
+	// cart: [...cartItems],
+	cart: new Map(cartItems.map((item) => [item.id, item])),
 };
 
 export const AppProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
+	const clearCart = () => {
+		dispatch({ type: CLEAR_CART });
+	};
+
+	const remove = (id) => {
+		dispatch({ type: REMOVE, payload: { id } });
+	};
+
 	// const greeting = "hello";
 	return (
-		<AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
+		<AppContext.Provider value={{ ...state, clearCart, remove }}>
+			{children}
+		</AppContext.Provider>
 	);
 };
 
