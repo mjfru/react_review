@@ -276,4 +276,36 @@ const useGlobalContext = () => {
 export default useGlobalContext;
 
 * To simplify accessing context values & avoid important useContext over and over.
+
+! useReducer Quiz
+? What is the purpose of the action.type in a reducer function?
+const reducer = (state, action) => {
+  if (action.type === 'CLEAR_LIST') {
+    return { ...state, people: [] };
+  }
+  return state;
+};
+
+* It identifies the specific action to handle in the reducer function.
+
+? In the following code, what will happen when the clearList function is called?
+const CLEAR_LIST = 'CLEAR_LIST';
+
+const reducer = (state, action) => {
+  if (action.type === CLEAR_LIST) {
+    return { ...state, people: [] };
+  }
+  return state;
+};
+
+const clearList = () => {
+  dispatch({ type: CLEAR_LIST });
+};
+
+* The people array in the state will be cleared / have nothing in it.
+
+? What is the role of dispatch in the useReducer hook?
+const [state, dispatch] = useReducer(reducer, defaultState);
+
+* It triggers an action to update the state using the reducer logic.
 */
