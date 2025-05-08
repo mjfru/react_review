@@ -40,6 +40,14 @@ import FetchData from "./tutorial/08-custom-hooks/starter/02-fetch-data";
 import Navbar from "./tutorial/09-context-api/starter/Navbar";
 import ReducerBasics from "./tutorial/10-useReducer/starter/01-useReducer";
 
+// Performance Demos
+import Counter from "./tutorial/11-performance/starter/01-lower-state/Counter";
+// import LowerState from "./tutorial/11-performance/starter/01-lower-state";
+import LowerStateChallenge from "./tutorial/11-performance/starter/02-lower-state-challenge";
+import LowerState from "./tutorial/11-performance/starter/03-hooks";
+import LatestReact from "./tutorial/11-performance/starter/04-react-18";
+// Performance
+
 function App() {
 	return (
 		<div className="container">
@@ -86,7 +94,11 @@ function App() {
 			{/* <Navbar /> */}
 
       {/* useReducer */}
-      <ReducerBasics />
+      {/* <ReducerBasics /> */}
+      {/* <LowerState /> */}
+      {/* <LowerStateChallenge /> */}
+      {/* <LowerState /> */}
+      <LatestReact />
 		</div>
 	);
 }
