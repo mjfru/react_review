@@ -43,8 +43,6 @@ Setup content type and create few entries
 
 Get Space ID, Access Token and explore code examples.
 
-Space ID -
-Access Token -
 
 #### Install SDK
 
