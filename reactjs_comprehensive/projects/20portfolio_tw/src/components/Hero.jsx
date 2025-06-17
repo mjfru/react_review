@@ -4,7 +4,7 @@ import { FaGithubSquare, FaLinkedin } from "react-icons/fa";
 const Hero = () => {
 	return (
 		<div className="py-24 bg-emerald-200">
-			<div className="grid items-center gap-8 px-8 mx-auto max-w-7xl md:grid-cols-2">
+			<div className="grid items-center gap-8 align-element md:grid-cols-2">
 				<article>
 					<h1 className="font-bold tracking-wider text-7xl">I'm Matt</h1>
 					<p className="mt-4 text-3xl tracking-wide capitalize text-slate-700">

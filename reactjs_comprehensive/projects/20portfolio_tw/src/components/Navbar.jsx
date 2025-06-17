@@ -3,7 +3,7 @@ import { links } from "../data";
 const Navbar = () => {
 	return (
 		<nav className="bg-emerald-200">
-			<div className="flex flex-col px-8 py-4 mx-auto max-w-7xl sm:flex-row sm:gap-x-16 sm:items-center sm:py-8">
+			<div className="flex flex-col py-4 align-element sm:flex-row sm:gap-x-16 sm:items-center sm:py-8">
 				<h2 className="text-3xl font-bold">
 					Web<span className="text-emerald-600">Dev</span>
 				</h2>
