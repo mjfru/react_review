@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
+import { Header } from "../components";
 
 const HomeLayout = () => {
 	return (
-    <>
-      <nav>
-        <span className="text-4xl text-primary">Comfy</span>
-      </nav>
-      <Outlet />
-    </>
-  )
+		<>
+      <Header />
+			<section className="py-20 align-element">
+				<Outlet />
+			</section>
+		</>
+	);
 };
 
 export default HomeLayout;
