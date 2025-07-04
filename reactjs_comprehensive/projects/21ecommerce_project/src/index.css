@@ -1,8 +1,10 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+	themes: fantasy, abyss;
+}
 
 @layer components {
-  .align-element {
-    @apply max-w-6xl px-8 mx-auto;
-  }
+	.align-element {
+		@apply max-w-6xl px-8 mx-auto;
+	}
 }

@@ -1,8 +1,35 @@
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
-import { NavLink } from "react-router-dom";
+import NavLinks from "./NavLinks";
+
+const themes = {
+	abyss: "abyss",
+	fantasy: "fantasy",
+};
+
+// Get the local storage value when the component mounts:
+const getLSTheme = () => {
+  return localStorage.getItem('theme') || themes.fantasy;
+}
 
 const Navbar = () => {
+	const [theme, setTheme] = useState(getLSTheme);
+
+	const handleThemeChange = () => {
+    const { abyss, fantasy } = themes;
+    const newTheme = theme === fantasy ? abyss : fantasy
+		
+    document.documentElement.setAttribute('data-theme', theme);
+    setTheme(newTheme);
+	};
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme])
+
 	return (
 		<nav className="bg-base-200">
 			<div className="navbar align-element">
@@ -14,6 +41,7 @@ const Navbar = () => {
 					>
 						C
 					</NavLink>
+
 					{/* Dropdown */}
 					<div className="dropdown">
 						<label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -21,17 +49,29 @@ const Navbar = () => {
 						</label>
 						<ul
 							tabIndex={0}
-							className="mt-3 menu menu-sm dropdown-content z-[1] p-2 shadow bg-base-200"
+							className="mt-3 menu menu-sm dropdown-content z-[1] p-2 shadow bg-base-200 rounded-box w-52"
 						>
-							nav links
+							<NavLinks />
 						</ul>
 					</div>
 				</div>
+
 				<div className="hidden navbar-center lg:flex">
-					<ul className="menu menu-horizontal">Nav links</ul>
+					<ul className="menu menu-horizontal">
+						<NavLinks />
+					</ul>
 				</div>
+
 				<div className="navbar-end">
 					{/* Theme */}
+					<label className="swap swap-rotate">
+						<input type="checkbox" onChange={handleThemeChange} />
+						{/* Sun Icon */}
+						<BsSunFill className="h-4 swap-on" />
+						{/* Moon Icon */}
+						<BsMoonFill className="h-4 swap-off" />
+					</label>
+
 					{/* Cart */}
 					<NavLink to="/cart" className="ml-4 btn btn-ghost btn-circle btn-md">
 						<div className="indicator">
