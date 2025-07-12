@@ -1,6 +1,8 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { customFetch, formatPrice } from "../utils";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../features/cart/cartSlice";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const loader = async ({ params }) => {
@@ -11,19 +13,34 @@ export const loader = async ({ params }) => {
 };
 
 const SingleProduct = () => {
+	const { product } = useLoaderData();
+	// console.log(product);
+	const { image, title, price, description, colors, company } =
+		product.attributes;
 	const [productColor, setProductColor] = useState([0]);
 	const [amount, setAmount] = useState(1);
+	const dollarsAmount = formatPrice(price);
 
 	const handleAmount = (e) => {
 		setAmount(parseInt(e.target.value));
 	};
 
-	const { product } = useLoaderData();
-	// console.log(product);
+	const cartProduct = {
+		cartID: product.id + productColor,
+		productID: product.id,
+		image,
+		title,
+		price,
+		company,
+		productColor,
+		amount,
+	};
+	const dispatch = useDispatch();
 
-	const { image, title, price, description, colors, company } =
-		product.attributes;
-	const dollarsAmount = formatPrice(price);
+	const addToCart = () => {
+		dispatch(addItem({ product: cartProduct }));
+	};
+
 	return (
 		<section>
 			<div className="text-md breadcrumbs">
@@ -100,7 +117,7 @@ const SingleProduct = () => {
 							<button
 								type="button"
 								className="btn btn-secondary btn-md"
-								onClick={() => console.log("Added")}
+								onClick={addToCart}
 							>
 								Add to cart
 							</button>

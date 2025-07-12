@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
 import NavLinks from "./NavLinks";
+import { useSelector } from "react-redux";
 
 const themes = {
 	abyss: "abyss",
@@ -11,24 +12,28 @@ const themes = {
 
 // Get the local storage value when the component mounts:
 const getLSTheme = () => {
-  return localStorage.getItem('theme') || themes.fantasy;
-}
+	return localStorage.getItem("theme") || themes.fantasy;
+};
 
 const Navbar = () => {
 	const [theme, setTheme] = useState(getLSTheme);
 
 	const handleThemeChange = () => {
-    const { abyss, fantasy } = themes;
-    const newTheme = theme === fantasy ? abyss : fantasy
-		
-    document.documentElement.setAttribute('data-theme', theme);
-    setTheme(newTheme);
+		const { abyss, fantasy } = themes;
+		const newTheme = theme === fantasy ? abyss : fantasy;
+
+		document.documentElement.setAttribute("data-theme", theme);
+		setTheme(newTheme);
 	};
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme])
+	useEffect(() => {
+		document.documentElement.setAttribute("data-theme", theme);
+		localStorage.setItem("theme", theme);
+	}, [theme]);
+
+	const {numItemsInCart} = useSelector((state) => state.cartState);
+  // console.log(numItemsInCart);
+  
 
 	return (
 		<nav className="bg-base-200">
@@ -77,7 +82,7 @@ const Navbar = () => {
 						<div className="indicator">
 							<BsCart3 className="w-6 h-6" />
 							<span className="badge badge-sm badge-primary indicator-item">
-								7
+								{numItemsInCart}
 							</span>
 						</div>
 					</NavLink>
