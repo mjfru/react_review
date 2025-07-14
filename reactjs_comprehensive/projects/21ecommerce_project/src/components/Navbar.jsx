@@ -1,39 +1,19 @@
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
 import NavLinks from "./NavLinks";
-import { useSelector } from "react-redux";
-
-const themes = {
-	abyss: "abyss",
-	fantasy: "fantasy",
-};
-
-// Get the local storage value when the component mounts:
-const getLSTheme = () => {
-	return localStorage.getItem("theme") || themes.fantasy;
-};
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../features/user/userSlice";
 
 const Navbar = () => {
-	const [theme, setTheme] = useState(getLSTheme);
+	const dispatch = useDispatch();
 
 	const handleThemeChange = () => {
-		const { abyss, fantasy } = themes;
-		const newTheme = theme === fantasy ? abyss : fantasy;
-
-		document.documentElement.setAttribute("data-theme", theme);
-		setTheme(newTheme);
+		dispatch(toggleTheme());
 	};
 
-	useEffect(() => {
-		document.documentElement.setAttribute("data-theme", theme);
-		localStorage.setItem("theme", theme);
-	}, [theme]);
-
-	const {numItemsInCart} = useSelector((state) => state.cartState);
-  // console.log(numItemsInCart);
-  
+	const { numItemsInCart } = useSelector((state) => state.cartState);
+	// console.log(numItemsInCart);
 
 	return (
 		<nav className="bg-base-200">

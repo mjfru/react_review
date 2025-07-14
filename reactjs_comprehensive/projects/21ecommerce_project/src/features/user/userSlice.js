@@ -1,8 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const themes = {
+	abyss: "abyss",
+	fantasy: "fantasy",
+};
+
+// Get the local storage value when the component mounts:
+const getLSTheme = () => {
+	const theme = localStorage.getItem("theme") || themes.fantasy;
+	document.documentElement.setAttribute("data-theme", theme);
+	return theme;
+};
+
 const initialState = {
 	user: { username: "user" },
-	theme: "abyss",
+	theme: getLSTheme(),
 };
 
 const userSlice = createSlice({
@@ -16,7 +28,10 @@ const userSlice = createSlice({
 			console.log("logout");
 		},
 		toggleTheme: (state) => {
-			console.log("toggle theme");
+			const { abyss, fantasy } = themes;
+			state.theme = state.theme === fantasy ? abyss : fantasy;
+			document.documentElement.setAttribute("data-theme", state.theme);
+			localStorage.setItem("theme", state.theme);
 		},
 	},
 });
