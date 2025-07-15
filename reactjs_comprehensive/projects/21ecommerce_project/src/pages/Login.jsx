@@ -4,6 +4,7 @@ import { FormInput, SubmitButton } from "../components";
 import { customFetch } from "../utils";
 import { loginUser } from "../features/user/userSlice";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const action =
 	(store) =>
 	async ({ request }) => {
@@ -20,6 +21,22 @@ export const action =
 	};
 
 const Login = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const loginAsGuest = async () => {
+		try {
+			const response = await customFetch.post("/auth/local", {
+				identifier: "test@test.com",
+				password: "secret",
+			});
+			dispatch(loginUser(response.data));
+			navigate("/");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<section className="grid h-screen place-items-center">
 			<Form
@@ -31,20 +48,24 @@ const Login = () => {
 					type="email"
 					label="email"
 					name="identifier"
-					defaultValue="test@test.com"
+					// defaultValue="test@test.com"
 				/>
 				<FormInput
 					type="password"
 					label="password"
 					name="password"
-					defaultValue="secret"
+					// defaultValue="secret"
 				/>
 
 				<div className="mt-4">
 					<SubmitButton text="LOGIN" />
 				</div>
 
-				<button className="btn btn-secondary btn-block" type="button">
+				<button
+					className="btn btn-secondary btn-block"
+					type="button"
+					onClick={loginAsGuest}
+				>
 					Guest User
 				</button>
 				<p className="text-center">
