@@ -1,5 +1,23 @@
+import { Form, Link, redirect, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { FormInput, SubmitButton } from "../components";
-import { Form, Link } from "react-router-dom";
+import { customFetch } from "../utils";
+import { loginUser } from "../features/user/userSlice";
+
+export const action =
+	(store) =>
+	async ({ request }) => {
+		const formData = await request.formData();
+		const data = Object.fromEntries(formData);
+
+		try {
+			const response = await customFetch.post("/auth/local", data);
+			store.dispatch(loginUser(response.data));
+			return redirect("/");
+		} catch {
+			return null;
+		}
+	};
 
 const Login = () => {
 	return (
@@ -25,19 +43,19 @@ const Login = () => {
 				<div className="mt-4">
 					<SubmitButton text="LOGIN" />
 				</div>
-        
-        <button className="btn btn-secondary btn-block" type="button">
-						Guest User
-					</button>
-					<p className="text-center">
-						Not a member yet?
-						<Link
-							to="/register"
-							className="ml-2 capitalize link link-hover link-primary"
-						>
-              Register
-            </Link>
-					</p>
+
+				<button className="btn btn-secondary btn-block" type="button">
+					Guest User
+				</button>
+				<p className="text-center">
+					Not a member yet?
+					<Link
+						to="/register"
+						className="ml-2 capitalize link link-hover link-primary"
+					>
+						Register
+					</Link>
+				</p>
 			</Form>
 		</section>
 	);
