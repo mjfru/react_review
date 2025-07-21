@@ -1,4 +1,4 @@
-const FormInput = ({ label, name, type, defaultValue, size}) => {
+const FormInput = ({ label, name, type, defaultValue, size = 'w-full'}) => {
 	return (
 		<div className="form-control">
 			<label className="label">
