@@ -37,15 +37,15 @@ export const action =
 			return redirect("/orders");
 		} catch (e) {
 			console.log(e);
+			if (e.response.status === 401) return redirect("/login");
+			return null;
 		}
-		return null;
 	};
 
 const CheckoutForm = () => {
 	return (
 		<Form method="POST" className="flex flex-col gap-y-4">
 			<h4 className="font-medium text-xl capitalize">Shipping Information</h4>
-			{/* Error in styling is here */}
 			<FormInput label="first name" name="name" type="text" />
 			<FormInput label="address" name="address" type="text" />
 			<div className="mt-4">
