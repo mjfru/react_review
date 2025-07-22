@@ -20,6 +20,7 @@ const OrdersList = () => {
 							<th className="hidden sm:block">Date</th>
 						</tr>
 					</thead>
+          {/* Body Content */}
 					<tbody>
 						{orders.map((order) => {
 							// console.log(order);

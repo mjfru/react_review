@@ -1,6 +1,6 @@
 import { redirect, useLoaderData } from "react-router-dom";
 import { customFetch } from "../utils";
-import { OrdersList, PaginationContainer, SectionTitle } from "../components";
+import { OrdersList, ComplexPaginationContainer, SectionTitle } from "../components";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const loader =
@@ -41,7 +41,7 @@ const Orders = () => {
 		<>
 			<SectionTitle text="Your Orders" />
 			<OrdersList />
-			<PaginationContainer />
+			<ComplexPaginationContainer />
 		</>
 	);
 };
