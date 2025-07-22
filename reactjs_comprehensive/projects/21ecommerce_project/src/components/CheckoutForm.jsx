@@ -37,7 +37,8 @@ export const action =
 			return redirect("/orders");
 		} catch (e) {
 			console.log(e);
-			if (e.response.status === 401) return redirect("/login");
+			if (e.response.status === 401 || e.response.status === 403)
+				return redirect("/login");
 			return null;
 		}
 	};
