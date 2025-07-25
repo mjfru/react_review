@@ -4,7 +4,7 @@ import { customFetch } from "../utils/index";
 const url = "/products";
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const loader = async ({ request }) => {
+export const loader = (queryClient) => async ({ request }) => {
 	const params = Object.fromEntries([
 		...new URL(request.url).searchParams.entries(),
 	]);
