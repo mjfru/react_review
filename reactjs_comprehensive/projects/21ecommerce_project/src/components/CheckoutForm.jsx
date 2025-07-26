@@ -6,7 +6,7 @@ import { clearCart } from "../features/cart/cartSlice";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const action =
-	(store) =>
+	(store, queryClient) =>
 	async ({ request }) => {
 		const formData = await request.formData();
 		const { name, address } = Object.fromEntries(formData);
@@ -33,11 +33,13 @@ export const action =
 				}
 			);
 			console.log(response);
+			queryClient.removeQueries(["orders"]);
+
 			store.dispatch(clearCart());
 			return redirect("/orders");
 		} catch (e) {
 			console.log(e);
-			if (e.response.status === 401 || e.response.status === 403)
+			if (e?.response?.status === 401 || e?.response?.status === 403)
 				return redirect("/login");
 			return null;
 		}

@@ -10,8 +10,8 @@ import { addItem } from "../features/cart/cartSlice";
 
 const singleProductQuery = (id) => {
 	return {
-		queryKey: ["singleProduct, id"],
-		queryFn: customFetch(`/products/${id}`),
+		queryKey: ["singleProduct", id],
+		queryFn: () => customFetch(`/products/${id}`),
 	};
 };
 
@@ -20,10 +20,9 @@ export const loader =
 	(queryClient) =>
 	async ({ params }) => {
 		const response = await queryClient.ensureQueryData(
-			singleProductQuery(params)
+			singleProductQuery(params.id)
 		);
 		console.log(response);
-
 		return { product: response.data.data };
 	};
 

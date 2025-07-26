@@ -1,10 +1,31 @@
 import { redirect, useLoaderData } from "react-router-dom";
 import { customFetch } from "../utils";
-import { OrdersList, ComplexPaginationContainer, SectionTitle } from "../components";
+import {
+	OrdersList,
+	ComplexPaginationContainer,
+	SectionTitle,
+} from "../components";
+
+const ordersQuery = (params, user) => {
+	return {
+		queryKey: [
+			"orders",
+			user.username,
+			params.page ? parseInt(params.page) : 1,
+		],
+		queryFn: () =>
+			customFetch.get("/orders", {
+				params,
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			}),
+	};
+};
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const loader =
-	(store) =>
+	(store, queryClient) =>
 	async ({ request }) => {
 		const user = store.getState().userState.user;
 		if (!user) {
@@ -15,18 +36,14 @@ export const loader =
 		]);
 
 		try {
-			const response = await customFetch.get("/orders", {
-				params,
-				headers: {
-					Authorization: `Bearer ${user.token}`,
-				},
-			});
+			const response = await queryClient.ensureQueryData(
+				ordersQuery(params, user)
+			);
 			console.log(response);
-
 			return { orders: response.data.data, meta: response.data.meta };
 		} catch (e) {
 			console.log(e);
-			if (e.response.status === 401 || e.response.status === 403)
+			if (e?.response?.status === 401 || e?.response?.status === 403)
 				return redirect("/login");
 			return null;
 		}
