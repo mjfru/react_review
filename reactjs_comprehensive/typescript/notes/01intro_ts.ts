@@ -35,3 +35,39 @@ luckyNumber = luckyNumber + 5;
 //TODO Create a variable of type boolean and type to perform a logical operation on it
 let isLucky: boolean = luckyNumber === 777;
 console.log(isLucky);
+
+//! Union Types
+//? Let's say we want something to but a number OR a string...
+let tax: number | string = 10;
+tax = "one-hundred"; // OK
+tax = 100; // Also OK!
+
+//? Providing the literal value for occasions when there are only a few options:
+let requestStatus: "pending" | "success" | "error" = "pending";
+requestStatus = "success";
+
+//? Any type is valid for maximum flexibility, mirrors vanilla JS.
+// Be careful adding these into your application, they should be used sparingly or you lose the benefits of TS.
+let notSure: any = 4;
+notSure = "now a string!";
+notSure = false;
+
+const books = ["1984", "Brave New World", "Fahrenheit 451"];
+let foundBook: string | undefined;
+
+for (let book of books) {
+	if (book === "1984") {
+		foundBook = book;
+		foundBook = foundBook.toUpperCase();
+		break;
+	}
+}
+
+// TS adds the optional chaining here automatically if the foundBook ends up being a string.
+console.log(foundBook?.length);
+
+//TODO - Exercise time:
+let discount: number | string = 20;
+discount = "20%";
+
+let orderStatus: "processing" | "shipped" | "delivered" = "processing";
