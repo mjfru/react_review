@@ -71,3 +71,52 @@ let discount: number | string = 20;
 discount = "20%";
 
 let orderStatus: "processing" | "shipped" | "delivered" = "processing";
+
+//! Objects & Arrays
+//* :number[] indicates it's an array of only numbers
+let prices: number[] = [100, 75, 42];
+prices.push(77);
+
+let fruit: string[] = ["apple", "orange"];
+fruit.push("mango");
+
+//? TS assumes this will always be an empty array; something to be careful of
+let randomValues: [] = [];
+
+//? This infers the type of 'any'.
+let emptyValues = [];
+
+//? TS infers a union type of string or numbers if undeclared like this:
+let names = ["Peter", "Susan", 1];
+
+//* Explicitly assigning union types
+let array: (string | boolean)[] = ["apple", true, "mango", false];
+
+//TODO - Exercise time:
+let temperatures: number[] = [20, 25, 30];
+let colors: string[] = ["red", "green", "blue"];
+
+let mixedArray: (number | string)[] = [1, "two", 3];
+
+//* Objects -- let variable: { key: value type } = { your object here }
+let car: { brand: string; year: number } = { brand: "Toyota", year: 2020 };
+car.brand = "Lexus";
+
+let car1: { brand: string; year: number } = { brand: "Audi", year: 2024 };
+//
+let book = { title: "Book", cost: 20 };
+let pen = { title: "Pen", cost: 4 };
+let notebook = { title: "Notebook" };
+//* Declaring an array full of objects, and what the object keys and values will be
+//* Readonly makes it so the array is not able to be manipulated
+//* Using the '?' is conditional, if it exists, add it. If not, that's OK.
+let items: { readonly title: string; cost?: number }[] = [book, pen, notebook];
+
+//TODO - Object Exercise:
+let bike: { brand: string; year: number } = { brand: "Yamaha", year: 2015 };
+let laptop: { brand: string; year: number } = { brand: "Dell", year: 2021 };
+
+let product1 = { title: "shirt", price: 20 };
+let product2 = { title: "pants" };
+
+let products: { title: string; price?: number }[] = [product1, product2];
