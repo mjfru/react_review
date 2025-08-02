@@ -97,9 +97,63 @@ function processInput(input: string | number): void {
 	} else {
 		console.log(input.toUpperCase());
 	}
-}``
+}
+``;
 
 processInput(10);
 processInput("Hello");
 
 //! Objects as Parameters and Excess Property Checks
+//? There is a better way to go about this, but for learning about objects as params, let's practice this for now
+function createEmployee({ id }: { id: number }): {
+	id: number;
+	isActive: boolean;
+} {
+	return { id, isActive: id % 2 === 0 };
+}
+
+const first = createEmployee({ id: 1 });
+const second = createEmployee({ id: 2 });
+
+//* Alternative
+function createStudent(student: { id: number; name: string }): void {
+	console.log(`Welcome to the course, ${student.name.toUpperCase()}!`);
+}
+
+const newStudent = {
+	id: 5,
+	name: "Jon",
+};
+
+createStudent(newStudent);
+
+//* Excess Propety Checks
+//? What if this happens?: createStudent({id: 1, name: "Rob", email: "robbo@gmail.com"});
+// TS won't allow it, however, if it's passed in as a variable (like newStudent), it won't complain.
+
+//TODO Your task is to create a function named processData that accepts two parameters:
+/*
+- The first param, input, should be a union type that can be either a string or a number.
+- The second param, config, should be an object with a reverse propety of type boolean, by default it should be 'false'.
+TODO The function should behave as follows:
+- If input is of type number, the function should return the square of the number.
+- If input is of type string, the function should return the string in uppercase.
+- If the reverse property on the config object is true, and input is a string, the function should return the reversed string in uppercase.
+*/
+
+function processData(
+	input: string | number,
+	config: { reverse: boolean } = { reverse: false }
+): string | number {
+	if (typeof input === "number") {
+		return input * input;
+	} else {
+		return config.reverse
+			? input.toUpperCase().split("").reverse().join("")
+			: input.toUpperCase();
+	}
+}
+
+console.log(processData(10));
+console.log(processData("Hello"));
+console.log(processData("Hello", { reverse: true }));
