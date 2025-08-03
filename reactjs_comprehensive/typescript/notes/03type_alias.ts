@@ -68,3 +68,51 @@ TODO - Create Employee and Manager objects: Create two Employee objects. One nam
 
 TODO - Test the function: Call the printStaffDetails function with alice and bob as arguments and verify the output.
 */
+
+type Employee = { id: number; name: string; department: string };
+type Manager = { id: number; name: string; employees: Employee[] };
+type Staff = Employee | Manager;
+
+function printStaffDetails(staff: Staff): void {
+	if ("employees" in staff) {
+		console.log(
+			`${staff.name} is a manager in charge of ${staff.employees.length} employees.`
+		);
+	} else {
+		console.log(
+			`${staff.name} is an employee in the ${staff.department.toUpperCase()}`
+		);
+	}
+}
+
+const alice: Employee = { id: 1, name: "alice", department: "sales" };
+const steve: Employee = { id: 2, name: "steve", department: "hr" };
+const bob: Manager = { id: 1, name: "bob", employees: [alice, steve] };
+
+//! Intersection Types
+type Book = { id: number; name: string; price: number };
+
+const book1: Book = {
+	id: 1,
+	name: "Fifty-Two Stories",
+	price: 15,
+};
+const book2: Book = {
+	id: 2,
+	name: "Crime & Punishment",
+	price: 20,
+};
+
+//? What can we do in this situation? Another type would be a lot of writing.
+//* The intersection type solves problems like this. TypeAlias&{new type}
+const discountedBook: Book&{discount: number} = {
+	id: 3,
+	name: "War & Peace",
+	price: 25,
+	discount: 0.15,
+};
+
+//* OR, make a new type Alias:
+/*
+type DiscountedBook = Book & { discount: number };
+*/
