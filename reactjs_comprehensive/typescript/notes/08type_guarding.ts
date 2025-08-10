@@ -120,3 +120,94 @@ const year = checkInput(new Date());
 const randomInput = checkInput("2025");
 console.log(year);
 console.log(randomInput);
+
+/*
+! Type Predicate
+* A type predicate is a function whose return type is a special kind of type that can be used to narrow down types within conditional blocks.
+TODO - - Define the Person and Student types. Student should have a study method and Person should have a login method.
+- Create a function named isStudent that takes a parameter person of type Person.
+- In the function signature, specify a return type that is a type predicate: person is Student.
+- In the function body, use a type assertion to treat person as a Student, and check if the study - method is not undefined. This will return true if person is a Student, and false otherwise.
+- Use the isStudent function in an if statement with person as the argument.
+- In the if block (where isStudent(person) is true), call the study method on person. TypeScript knows that person is a Student in this block, so this is safe.
+- In the else block (where isStudent(person) is false), call the login method on person. This is safe because if person is not a Student, it must be a Person, and all Person objects have a login method.
+*/
+
+type Student = {
+	name: string;
+	study: () => void;
+};
+
+type User = {
+	name: string;
+	login: () => void;
+};
+
+type Person = Student | User;
+
+const randomPerson = (): Person => {
+	return Math.random() > 0.5
+		? { name: "john", study: () => console.log("Studying") }
+		: { name: "mary", login: () => console.log("Logging in") };
+};
+
+const examplePerson = randomPerson();
+
+function isStudent(person: Person): person is Student {
+	// return 'study' in person
+	return (person as Student).study !== undefined;
+}
+
+if (isStudent(examplePerson)) {
+	examplePerson.study();
+} else {
+	examplePerson.login();
+}
+
+/*
+! Discriminated Unions & Exhaustive Check using the never type
+* A discriminated union in TypeScript is a type that can be one of several different types, each identified by a unique literal property (the discriminator), allowing for type-safe handling of each possible variant.
+
+TODO - - Write a reducer function that takes the current state and an action, and returns the new state. The reducer function should use a switch statement or if-else chain on the type property of the action to handle each action type differently.
+
+- In the default case of the switch statement or the final else clause, perform an exhaustive check by assigning the action to a variable of type never. If there are any action types that haven't been handled, TypeScript will give a compile error.
+
+- Implement the logic for each action type in the reducer function. This typically involves returning a new state based on the current state and the properties of the action.
+
+- Use the reducer function in your application to handle actions and update the state.
+*/
+
+type IncrementAction = {
+	type: "increment";
+	amount: number;
+	timestamp: number;
+	user: string;
+};
+
+type DecrementAction = {
+	type: "decrement";
+	amount: number;
+	timestamp: number;
+	user: string;
+};
+
+type Action = IncrementAction | DecrementAction;
+
+function reducer(state: number, action: Action) {
+	switch (action.type) {
+		case "increment":
+			return state + action.amount;
+		case "decrement":
+			return state - action.amount;
+		default:
+			const unexpectedAction: never = action;
+			throw new Error(`Unexpected action: ${unexpectedAction}`);
+	}
+}
+
+const newState = reducer(15, {
+	user: "John",
+	type: "increment",
+	amount: 5,
+	timestamp: 123456,
+});
