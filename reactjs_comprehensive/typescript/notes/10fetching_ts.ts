@@ -5,13 +5,22 @@
 
 const url = "https://www.course-api.com/react-tours-project";
 
-async function fetchData(url: string) {
+//TODO Part of Challenge:
+type Tour = {
+	id: string;
+	name: string;
+	info: string;
+	image: string;
+	price: string;
+};
+
+async function fetchData(url: string): Promise<Tour[]> {
 	try {
 		const response = await fetch(url);
 		if (!response.ok) {
 			throw new Error(`HTTP Error Status:${response.status}`);
 		}
-		const data = await response.json();
+		const data: Tour[] = await response.json();
 		console.log(data);
 
 		return data;
@@ -23,10 +32,11 @@ async function fetchData(url: string) {
 	}
 }
 
+export {};
 // fetchData(url);
 
 //TODO Challenge: Setup the type and provide the correct return type:
-// const tours = fetchData(url);
-// tours.map((tour: any) => {
-//   console.log(tour.name);
-// })
+const tours = await fetchData(url);
+tours.map((tour) => {
+	console.log(tour.name);
+});
