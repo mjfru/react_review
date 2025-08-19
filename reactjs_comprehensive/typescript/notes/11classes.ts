@@ -34,5 +34,35 @@ class Book {
 }
 
 const favoriteBook = new Book("1Q84", "Haruki Murakami");
-favoriteBook.checkout();
-console.log(favoriteBook);
+// favoriteBook.checkout();
+// console.log(favoriteBook);
+
+//! Getters & Setters
+
+class Game {
+	private isOwned: boolean = true;
+	constructor(
+		readonly title: string,
+		public platform: string,
+		private rating: number
+	) {}
+
+	// Despite the name, this is a 'normal' public method on this class
+	public getRating() {
+		return this.rating;
+	}
+
+	//* 'Getters' start with the keyword 'get':
+	get info() {
+		return `${this.title} on ${this.platform} - ${this.rating}`;
+	}
+
+	//* Likewise with 'Setters':
+	set newRating(newRating: number) {
+		this.rating = newRating;
+	}
+}
+
+const favoriteGame = new Game("Elden Ring", "PS5", 9);
+favoriteGame.getRating(); // 9
+favoriteGame.newRating = 10;
