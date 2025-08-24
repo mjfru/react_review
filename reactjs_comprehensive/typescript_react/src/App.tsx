@@ -1,7 +1,8 @@
 // import Component from "./starter/01-return";
 // import Component from "./starter/02-props";
 // import Component from "./starter/03-state";
-import Component from "./starter/04-events";
+// import Component from "./starter/04-events";
+import Component from "./starter/05-challenge";
 
 function App() {
 	return (
@@ -16,7 +17,11 @@ function App() {
 			{/* <Component /> */}
 
 			{/* Example for Events */}
-			<Component />
+			{/* <Component /> */}
+
+			{/* Challenge */}
+			<Component type="basic" name="Matt" />
+			<Component type="advanced" name="James" email="james@yahoo.com" />
 		</main>
 	);
 }
