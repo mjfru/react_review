@@ -2,7 +2,8 @@
 // import Component from "./starter/02-props";
 // import Component from "./starter/03-state";
 // import Component from "./starter/04-events";
-import Component from "./starter/05-challenge";
+// import Component from "./starter/05-challenge";
+import Component from "./starter/06-context";
 
 function App() {
 	return (
@@ -20,8 +21,11 @@ function App() {
 			{/* <Component /> */}
 
 			{/* Challenge */}
-			<Component type="basic" name="Matt" />
-			<Component type="advanced" name="James" email="james@yahoo.com" />
+			{/* <Component type="basic" name="Matt" />
+			<Component type="advanced" name="James" email="james@yahoo.com" /> */}
+
+			{/* Context API */}
+			<Component />
 		</main>
 	);
 }
