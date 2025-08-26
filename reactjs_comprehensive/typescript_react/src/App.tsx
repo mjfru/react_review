@@ -5,7 +5,8 @@
 // import Component from "./starter/05-challenge";
 // import Component from "./starter/06-context";
 // import Component from "./starter/07-reducers";
-import Component from "./starter/08-fetch-data";
+// import Component from "./starter/08-fetch-data";
+import Component from "./starter/09-rtk";
 
 function App() {
 	return (
@@ -33,6 +34,9 @@ function App() {
 			{/* <Component /> */}
 
       {/* Fetching Data */}
+      {/* <Component /> */}
+
+      {/* Redux Toolkit */}
       <Component />
 		</main>
 	);
