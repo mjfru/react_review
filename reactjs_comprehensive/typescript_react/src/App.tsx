@@ -6,38 +6,13 @@
 // import Component from "./starter/06-context";
 // import Component from "./starter/07-reducers";
 // import Component from "./starter/08-fetch-data";
-import Component from "./starter/09-rtk";
+// import Component from "./starter/09-rtk";
+import Component from "./starter/10-tasks";
 
 function App() {
 	return (
 		<main>
-			{/* <h2>React & Typescript</h2> */}
-			{/* Example for Props & Return: */}
-			{/* <Component name="Peter" id={123}>
-        <h2>Hello there!</h2>
-      </Component> */}
-
-			{/* Example for State */}
-			{/* <Component /> */}
-
-			{/* Example for Events */}
-			{/* <Component /> */}
-
-			{/* Challenge */}
-			{/* <Component type="basic" name="Matt" />
-			<Component type="advanced" name="James" email="james@yahoo.com" /> */}
-
-			{/* Context API */}
-			{/* <Component /> */}
-
-			{/* Reducers */}
-			{/* <Component /> */}
-
-      {/* Fetching Data */}
-      {/* <Component /> */}
-
-      {/* Redux Toolkit */}
-      <Component />
+			<Component />
 		</main>
 	);
 }
