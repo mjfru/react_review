@@ -2,7 +2,7 @@
 
 import { readFile, writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 type User = {
 	id: string;
@@ -10,23 +10,28 @@ type User = {
 	lastName: string;
 };
 
-export const createUser = async (formData: FormData) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createUser = async (prevState: any, formData: FormData) => {
 	"use server";
+	console.log(prevState);
+
 	console.log("Creating user...");
 	const firstName = formData.get("firstName") as string;
 	const lastName = formData.get("lastName") as string;
 	const newUser: User = { firstName, lastName, id: Date.now().toString() };
-	// await saveUser(newUser);
 	// Alternate method for both input data:
 	// const rawData = Object.fromEntries(formData);
 	// console.log(rawData);
 
 	try {
 		await saveUser(newUser);
+		revalidatePath("/actions");
+		return "user created successfully!";
 	} catch (e) {
 		console.log(e);
+		return "failed to create a new user...";
 	}
-	redirect("/");
+	// redirect("/");
 	// console.log(`${firstName} ${lastName}`);
 	// revalidatePath("/actions");
 	// redirect("/");
