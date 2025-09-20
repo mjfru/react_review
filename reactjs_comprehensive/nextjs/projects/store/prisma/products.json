@@ -1,0 +1,38 @@
+[
+	{
+		"name": "avant-garde lamp",
+		"company": "Modenza",
+		"description": "Bring modern artistry into your home with this avant-garde lamp, crafted with clean lines and a sculptural silhouette. The warm glow creates an inviting atmosphere while serving as a striking conversation piece. Ideal for living rooms, bedrooms, or creative spaces, it pairs style with function to elevate everyday lighting.",
+		"featured": true,
+		"image": "https://images.pexels.com/photos/943150/pexels-photo-943150.jpeg?auto=compress&cs=tinysrgb&w=1600",
+		"price": 100,
+		"clerkId": "clerkId"
+	},
+	{
+		"name": "chic chair",
+		"company": "Luxora",
+		"description": "The Chic Chair blends sleek design with all-day comfort, featuring a supportive frame and upholstered seat for effortless lounging. Its minimalist style complements both contemporary and classic interiors, making it the perfect accent for dining rooms, offices, or reading corners where sophistication meets relaxation.",
+		"featured": true,
+		"image": "https://images.pexels.com/photos/5705090/pexels-photo-5705090.jpeg?auto=compress&cs=tinysrgb&w=1600",
+		"price": 200,
+		"clerkId": "clerkId"
+	},
+	{
+		"name": "comfy bed",
+		"company": "Homestead",
+		"description": "Drift into restful nights with the Comfy Bed, designed for both support and softness. Its sturdy frame ensures durability while the inviting surface promises deep relaxation. A timeless design makes it easy to pair with any bedroom decor, creating a cozy retreat you’ll look forward to every evening.",
+		"featured": true,
+		"image": "https://images.pexels.com/photos/1034584/pexels-photo-1034584.jpeg?auto=compress&cs=tinysrgb&w=1600",
+		"price": 300,
+		"clerkId": "clerkId"
+	},
+	{
+		"name": "contemporary sofa",
+		"company": "Comfora",
+		"description": "Designed with modern living in mind, the Contemporary Sofa combines plush cushions with a streamlined silhouette. Its durable fabric and spacious seating make it perfect for entertaining guests or unwinding after a long day. This versatile piece brings elegance and comfort to any living space with ease.",
+		"featured": false,
+		"image": "https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg?auto=compress&cs=tinysrgb&w=1600",
+		"price": 400,
+		"clerkId": "clerkId"
+	}
+]
