@@ -9,6 +9,10 @@ import { LuAlignLeft } from "react-icons/lu";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { links } from "@/utils/links";
+import UserIcon from "./UserIcon";
+import { SignInButton, SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
+import Signout from "./Signout";
+// import { SignedIn, SignedOut, SignUpButton } from "@clerk/clerk-react";
 
 function LinksDropdown() {
 	return (
@@ -16,18 +20,39 @@ function LinksDropdown() {
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline" className="flex gap-4 max-w-[100px]">
 					<LuAlignLeft className="w-6 h-6" />
+					<UserIcon />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-40" align="start" sideOffset={10}>
-				{links.map((link) => {
-					return (
-						<DropdownMenuItem key={link.href}>
-							<Link href={link.href} className="capitalize w-full">
-								{link.label}
-							</Link>
-						</DropdownMenuItem>
-					);
-				})}
+				<SignedOut>
+					<DropdownMenuItem>
+						<SignInButton mode="modal">
+							<button className="w-full text-left">Login</button>
+						</SignInButton>
+					</DropdownMenuItem>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem>
+						<SignUpButton>
+							<button className="w-full text-left">Sign Up</button>
+						</SignUpButton>
+					</DropdownMenuItem>
+				</SignedOut>
+
+				<SignedIn>
+					{links.map((link) => {
+						return (
+							<DropdownMenuItem key={link.href}>
+								<Link href={link.href} className="capitalize w-full">
+									{link.label}
+								</Link>
+							</DropdownMenuItem>
+						);
+					})}
+					<DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Signout />
+          </DropdownMenuItem>
+				</SignedIn>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
