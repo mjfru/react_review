@@ -12,9 +12,13 @@ import { links } from "@/utils/links";
 import UserIcon from "./UserIcon";
 import { SignInButton, SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import Signout from "./Signout";
+import { auth } from "@clerk/nextjs/server";
 // import { SignedIn, SignedOut, SignUpButton } from "@clerk/clerk-react";
 
-function LinksDropdown() {
+async function LinksDropdown() {
+	const { userId } = await auth();
+	const isAdmin = userId === process.env.ADMIN_USER_ID;
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -40,6 +44,9 @@ function LinksDropdown() {
 
 				<SignedIn>
 					{links.map((link) => {
+            // Restricting access to the dashboard:
+						if (link.label === "dashboard" && !isAdmin) return null;
+
 						return (
 							<DropdownMenuItem key={link.href}>
 								<Link href={link.href} className="capitalize w-full">
@@ -49,9 +56,9 @@ function LinksDropdown() {
 						);
 					})}
 					<DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Signout />
-          </DropdownMenuItem>
+					<DropdownMenuItem>
+						<Signout />
+					</DropdownMenuItem>
 				</SignedIn>
 			</DropdownMenuContent>
 		</DropdownMenu>
