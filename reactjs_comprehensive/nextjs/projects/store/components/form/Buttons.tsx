@@ -7,7 +7,7 @@ import { SignInButton } from "@clerk/nextjs";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { LuTrash2, LuPen } from "react-icons/lu";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { LucidePenSquare } from "lucide-react";
+// import { LucidePenSquare } from "lucide-react";
 
 type btnSize = "default" | "lg" | "sm";
 
@@ -69,3 +69,37 @@ export const IconButton = ({ actionType }: { actionType: actionType }) => {
 	);
 };
 
+export const CardSignInButton = () => {
+	return (
+		<SignInButton mode="modal">
+			<Button
+				type="button"
+				size="icon"
+				variant="outline"
+				className="p-2 cursor-pointer"
+			>
+				<FaRegHeart />
+			</Button>
+		</SignInButton>
+	);
+};
+
+export const CardSubmitButton = ({ isFavorite }: { isFavorite: boolean }) => {
+	const { pending } = useFormStatus();
+	return (
+		<Button
+			type="submit"
+			size="icon"
+			variant="outline"
+			className="p-2 cursor-pointer"
+		>
+			{pending ? (
+				<ReloadIcon className="animate-spin" />
+			) : isFavorite ? (
+				<FaHeart />
+			) : (
+				<FaRegHeart />
+			)}
+		</Button>
+	);
+};
