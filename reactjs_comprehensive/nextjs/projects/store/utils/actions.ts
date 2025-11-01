@@ -446,6 +446,9 @@ export const updateCart = async (cart: Cart) => {
 		include: {
 			product: true,
 		},
+		orderBy: {
+			createdAt: "asc",
+		},
 	});
 	let numItemsInCart = 0;
 	let cartTotal = 0;
@@ -470,7 +473,7 @@ export const updateCart = async (cart: Cart) => {
 		},
 		include: includeProductClause,
 	});
-	return currentCart;
+	return { cartItems, currentCart };
 };
 
 export const addToCartAction = async (
@@ -541,7 +544,7 @@ export const updateCartItemAction = async ({
 			},
 		});
 		await updateCart(cart);
-    revalidatePath("/cart");
+		revalidatePath("/cart");
 		return { message: "Cart updated" };
 	} catch (error) {
 		return renderError(error);
