@@ -8,6 +8,7 @@ import db from "@/utils/db";
 export const GET = async (req: NextRequest) => {
 	const { searchParams } = new URL(req.url);
 	const session_id = searchParams.get("session_id") as string;
+
 	try {
 		const session = await stripe.checkout.sessions.retrieve(session_id);
 

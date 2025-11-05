@@ -15,7 +15,7 @@ const stripePromise = loadStripe(
 function CheckoutPage() {
 	const searchParams = useSearchParams();
 	const orderId = searchParams.get("orderId");
-	const cartId = searchParams.get("cardId");
+	const cartId = searchParams.get("cartId");
 
 	const fetchClientSecret = useCallback(async () => {
 		const response = await axios.post("/api/payment", {
