@@ -1,6 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "@/queries";
 import { UserData } from "@/types";
+import UserCard from "./UserCard";
+import StatsContainer from "./StatsContainer";
+import ForkedRepos from "../charts/ForkedRepos";
 
 type UserProfileProps = {
 	username: string;
@@ -28,9 +31,18 @@ function UserProfile({ username }: UserProfileProps) {
 
 	return (
 		<div>
-			<h1 className="text-2xl font-bold">
-				{username} - {bio}
-			</h1>
+			<UserCard avatarUrl={avatarUrl} name={name} bio={bio} url={url} />
+			<StatsContainer
+				totalRepos={repositories.totalCount}
+				followers={followers.totalCount}
+				following={following.totalCount}
+				gists={gists.totalCount}
+			/>
+			{repositories.totalCount > 0 && (
+				<div className="grid md:grid-cols-2 gap-4">
+					<ForkedRepos repositories={repositories.nodes} />
+				</div>
+			)}
 		</div>
 	);
 }
