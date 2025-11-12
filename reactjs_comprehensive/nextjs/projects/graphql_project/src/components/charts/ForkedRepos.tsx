@@ -3,7 +3,7 @@ import { calculateMostForkedRepos } from "@/utils";
 
 function ForkedRepos({ repositories }: { repositories: Repository[] }) {
   const mostForkedRepos = calculateMostForkedRepos(repositories);
-  console.log(mostForkedRepos);
+  // console.log(mostForkedRepos);
   
 	return <div>ForkedRepos</div>;
 }
