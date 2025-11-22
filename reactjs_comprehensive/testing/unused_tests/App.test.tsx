@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 // Note: technically already available globally
 import { test, expect } from "vitest";
-import App from "../App";
+import App from "../01rtl_intro/src/App";
 
 describe("App Component", () => {
 	// Test if heading renders correctly:
