@@ -1,16 +1,18 @@
 import LinksDropdown from "./LinksDropdown";
 import { UserButton } from "@clerk/nextjs";
-import ThemeToggle from "./ThemeToggle";
+import { ModeToggle } from "./ThemeToggle";
 
 function Navbar() {
 	return (
 		<nav className="bg-muted py-4 sm:px-16 lg:px-24 px-4 flex items-center justify-between">
-      <LinksDropdown />
-      <div className="flex items-center gap-x-4">
-        <ThemeToggle />
-        <UserButton afterSignOutUrl="/" />
-      </div>
-    </nav>
+			<div>
+				<LinksDropdown />
+			</div>
+			<div className="flex items-center gap-x-4">
+				<ModeToggle />
+				<UserButton afterSignOutUrl="/" />
+			</div>
+		</nav>
 	);
 }
 
