@@ -24,7 +24,7 @@ function JobsList() {
 	return (
 		<>
 			{/* Button Container */}
-			<div className="grid md:grid-cols-2:gap-8">
+			<div className="grid md:grid-cols-2 gap-8">
 				{jobs.map((job) => {
 					return <JobCard key={job.id} job={job} />;
 				})}
