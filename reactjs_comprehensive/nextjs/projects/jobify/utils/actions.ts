@@ -9,8 +9,8 @@ import dayjs from "dayjs";
 
 function authenticateAndRedirect(): string {
 	const { userId } = auth();
-  console.log('userId', userId);
-  // user_36Tkro8cEcWC01hGQh1ZnBUp2yI
+	console.log("userId", userId);
+	// user_36Tkro8cEcWC01hGQh1ZnBUp2yI
 	if (!userId) redirect("/");
 	return userId;
 }
@@ -150,5 +150,41 @@ export async function updateJobAction(
 		return job;
 	} catch (error) {
 		return null;
+	}
+}
+
+export async function getStatsAction(): Promise<{
+	pending: number;
+	interview: number;
+	declined: number;
+}> {
+	const userId = authenticateAndRedirect();
+
+	try {
+		const stats = await prisma.job.groupBy({
+			where: {
+				clerkId: userId, // replace userId with the actual clerkId
+			},
+			by: ["status"],
+			_count: {
+				status: true,
+			},
+		});
+		
+    const statsObject = stats.reduce((acc, curr) => {
+			acc[curr.status] = curr._count.status;
+			return acc;
+		}, {} as Record<string, number>);
+
+		const defaultStats = {
+			pending: 0,
+			declined: 0,
+			interview: 0,
+			...statsObject,
+		};
+		
+    return defaultStats;
+	} catch (error) {
+		redirect("/jobs");
 	}
 }

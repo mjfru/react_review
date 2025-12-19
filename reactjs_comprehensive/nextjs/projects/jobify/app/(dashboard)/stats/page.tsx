@@ -1,9 +1,10 @@
+import { getStatsAction } from "@/utils/actions";
 
-
-function Stats() {
-  return (
-    <h1 className="text-4xl">Stats Page</h1>
-  )
+async function StatsPage() {
+  const stats = await getStatsAction();
+	console.log(stats);
+  
+	return <h1 className="text-4xl">Stats Page</h1>;
 }
 
-export default Stats
+export default StatsPage;
