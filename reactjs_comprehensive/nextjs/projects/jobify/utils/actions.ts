@@ -158,6 +158,8 @@ export async function getStatsAction(): Promise<{
 	interview: number;
 	declined: number;
 }> {
+	// await new Promise((resolve) => setTimeout(resolve, 5000));
+
 	const userId = authenticateAndRedirect();
 
 	try {
@@ -207,8 +209,7 @@ export async function getChartsDataAction(): Promise<
 			},
 		});
 
-    console.log(jobs);
-    
+		console.log(jobs);
 
 		let applicationsPerMonth = jobs.reduce((acc, job) => {
 			const date = dayjs(job.createdAt).format("MMM YY");
