@@ -30,3 +30,12 @@ function transformToObjects(numberArray) {
 
 let testArray = [100, 200, 300];
 console.log(transformToObjects(testArray));
+
+const reactDescriptions = ["Fundamental", "Crucial", "Core"];
+
+function generateRandomInt(max) {
+	return Math.floor(Math.random() * (max + 1));
+}
+
+const randomDescription = generateRandomInt(reactDescriptions.length);
+console.log(randomDescription);
