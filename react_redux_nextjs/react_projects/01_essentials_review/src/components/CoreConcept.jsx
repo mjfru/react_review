@@ -1,3 +1,5 @@
+
+
 export default function CoreConcept({ title, image, description }) {
 	return (
 		<li>
