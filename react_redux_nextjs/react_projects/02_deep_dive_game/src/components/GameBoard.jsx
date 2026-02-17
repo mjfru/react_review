@@ -1,22 +1,26 @@
 import { useState } from "react";
 
+// To be set as the initial state:
 const initialGameBoard = [
 	[null, null, null],
 	[null, null, null],
 	[null, null, null],
 ];
 
-export default function GameBoard() {
+export default function GameBoard({ onSelectSquare, activePlayer }) {
 	const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
 	function handleSelectSquare(rowIndex, colIndex) {
+		// To avoid directly mutating the initialGameBoard:
 		setGameBoard((prevGameBoard) => {
 			const updatedBoard = [
-				...prevGameBoard.map(innerArray => [...innerArray]),
+				...prevGameBoard.map((innerArray) => [...innerArray]),
 			];
-			updatedBoard[rowIndex][colIndex] = "X";
+			updatedBoard[rowIndex][colIndex] = activePlayer;
 			return updatedBoard;
 		});
+
+		onSelectSquare();
 	}
 
 	return (
