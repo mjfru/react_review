@@ -14,7 +14,8 @@ export default function Player({
 	};
 
 	const handleChange = (e) => {
-		setPlayerName(e.target.value);
+		const playerName = e.target.value;
+		setPlayerName(playerName);
 
 		if (isEditing) {
 			onChangeName(symbol, playerName);
