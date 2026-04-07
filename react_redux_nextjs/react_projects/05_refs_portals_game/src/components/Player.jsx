@@ -13,7 +13,9 @@ export default function Player() {
 
 	function handleClick() {
 		// setSubmitted(!submitted);
-    setPlayerName(playerName.current.value);
+		setPlayerName(playerName.current.value);
+		//* Directly overwriting to clear user input - not best practice:
+    playerName.current.value = "";
 	}
 
 	return (
