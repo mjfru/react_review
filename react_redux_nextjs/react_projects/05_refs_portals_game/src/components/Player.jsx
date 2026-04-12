@@ -15,7 +15,7 @@ export default function Player() {
 		// setSubmitted(!submitted);
 		setPlayerName(playerName.current.value);
 		//* Directly overwriting to clear user input - not best practice:
-    playerName.current.value = "";
+		playerName.current.value = "";
 	}
 
 	return (
@@ -33,3 +33,14 @@ export default function Player() {
 		</section>
 	);
 }
+
+/*
+! State:
+- Causes component re-evaluation when changed
+- Should be used for values that are directly reflected in the UI
+- Should NOT be used for "behind the scenes" values that have no direct UI impact
+
+! Refs:
+- Do NOT cause component re-evaluation
+- Can be used to gain direct DOM element access (great for reading values or accessing certain browser APIs)
+*/
